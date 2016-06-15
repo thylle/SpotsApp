@@ -1,0 +1,101 @@
+﻿@import "_custom-variables.scss";
+//@import "3rd-party/libraries/bootstrap/_mixins.scss";
+
+
+//Breakpoints
+@mixin breakpoint($name) {
+    $lg: "(max-width: 1200px)";
+    $md: "(max-width: 1020px)";
+    $sm: "(max-width: 992px)";
+    $xs: "(max-width: 767px)";
+    $xxs: "(max-width: 480px)";
+
+    @if $name == lg {
+        @media #{$lg} {
+            @content;
+        }
+    }
+    @else if $name == md {
+        @media #{$md} {
+            @content;
+        }
+    }
+    @else if $name == sm {
+        @media #{$sm} {
+            @content;
+        }
+    }
+    @else if $name == xs {
+        @media #{$xs} {
+            @content;
+        }
+    }
+}
+
+
+@mixin title-font(){
+    font-family: $font-family-alt;
+    font-weight: 700;
+}
+
+
+@mixin bootstrap-icon-font(){
+    font-family: "Glyphicons Halflings";
+}
+
+@mixin arrow-up(){
+    font-family: "Glyphicons Halflings";
+    content: "\e260";
+}
+@mixin arrow-down(){
+    font-family: "Glyphicons Halflings";
+    content: "\e259";
+}
+@mixin arrow-left(){
+    font-family: "Glyphicons Halflings";
+    content: "\e257";
+}
+@mixin arrow-right(){
+    font-family: "Glyphicons Halflings";
+    content: "\e258";
+}
+
+
+@mixin btn-arrow-hover-left(){
+    padding-left: $default-spacing / 2;
+}
+@mixin btn-arrow-hover-right(){
+    padding-right: $default-spacing / 2;
+}
+
+@mixin transition($transition...) {
+  -webkit-transition: $transition;
+       -o-transition: $transition;
+          transition: $transition;
+}
+
+
+@mixin transition-std($target: all, $ease: ease, $duration: 0.3s) {
+  -webkit-transition: $target $ease $duration;
+       -o-transition: $target $ease $duration;
+          transition: $target $ease $duration;
+}
+
+@mixin transition-category-item($target: all, $ease: ease, $duration: 0.3s, $delay: 0.4s) {
+  -webkit-transition: $target $ease $duration $delay;
+       -o-transition: $target $ease $duration $delay;
+          transition: $target $ease $duration $delay;
+}
+
+
+@mixin transform($transform...) {
+    -moz-transform: $transform;
+    -ms-transform: $transform;
+    -o-transform: $transform;
+    -webkit-transform: $transform;
+    transform: $transform;
+}
+
+@mixin border-radius($radius...){
+    border-radius: $radius;
+}

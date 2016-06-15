@@ -1,0 +1,144 @@
+@import "../../_custom-mixins.scss";
+@import "../../_custom-variables.scss";
+
+$category-item-height:  150px;
+$category-animation-duration: 0.4s;
+$category-animation-delay: 0.0s;
+
+
+.item-tools{
+    padding: 0 $default-spacing / 2 $default-spacing / 2;
+}
+
+.category-item-image{
+    background-color: $gray-light;
+
+    img{
+        min-height: 80px;
+    }
+}
+
+
+.item-image{
+    height: 240px;
+    background: $gray-light;
+    overflow: hidden;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    &__text{
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        
+        color: $white;
+        text-align: left;
+        font-size: 1.4em;
+        line-height: 1.4;
+        text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+        z-index: 2;
+
+        span{
+            position: absolute;
+            bottom: 0;
+            display: block;
+            padding: $default-spacing / 2;
+            padding-right: 130px; //to make space to distance info
+            float: left;
+            white-space: normal;
+
+            &:last-child{
+                right: 0;
+                padding: $default-spacing / 2;
+                text-align: right;
+            }
+        }
+    }
+    
+}
+
+
+.item-description{
+    min-height: 80px;
+}
+
+
+/*.list__item{
+    position: static;
+    height: $category-item-height;
+    margin: $default-spacing / 2 0;
+
+    &:nth-child(even){
+        .category-item{
+            &-tools{
+                display: block;
+                float: right;
+            }
+        }
+    }
+
+    .list__content{
+        @include transition(top $category-animation-duration ease 0s, height $category-animation-duration ease $category-animation-delay);
+        position: relative;
+        padding: 0 $default-spacing;
+        overflow: hidden;
+        height: $category-item-height;
+        min-height: $category-item-height;
+        background: $white;
+    }
+
+    .category-item{
+
+        &-image{
+            //@include transition-std;
+            position: absolute;
+            left: 5%;
+            width: 90%;
+            height: $category-item-height;
+            overflow: hidden;
+        }
+
+        &-tools{
+            @include transition(transform ease $category-animation-duration $category-animation-delay);
+            position: relative;
+            width: 200px;
+            height: $category-item-height;
+            padding: $default-spacing;
+            color: $white;
+            background: rgba($brand-primary, 0.7);
+            z-index: $z-index-list-item;
+
+            h3{
+                color: inherit;
+            }
+        }
+        
+    }
+}
+
+
+//Active
+.list__item.active{
+    
+    .list__content{
+        position: absolute;
+        height: 100%;
+        z-index: $z-index-list-item-active;
+    }
+
+    .category-item{
+
+        &-image{
+
+        }
+
+        &-tools{
+            @include transform(translate3d(0, $category-item-height, 0));
+        }
+    }
+    
+}
+
+
+*/

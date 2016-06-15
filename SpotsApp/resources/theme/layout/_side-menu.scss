@@ -1,0 +1,53 @@
+// Side Menu styles
+.menu {
+
+	// Full Background Menu Styling
+	&.full-page-bckg-menu {
+		@include gradient-vertical($positive, #000);
+
+		&:after {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: url(../img/login-bg.png) no-repeat center top;
+			background-size: cover;
+			opacity: 0.3;
+			-webkit-filter: blur(5px);
+			-moz-filter: blur(5px);
+			-o-filter: blur(5px);
+			-ms-filter: blur(5px);
+			filter: blur(5px);
+		}
+	}
+
+	.list {
+  		padding-top: 20px;
+  		padding-bottom: 20px;
+  	}
+  	.scroll {
+
+		&:after {
+			opacity: 0.3;
+			right: -10px;
+			left: -10px;
+		}
+	}
+	.item-content {
+		color: #fff;
+		text-transform: uppercase;
+	}
+	.item-complex,
+	.item-radio {
+
+		.item-content {
+			padding: 15px 30px;
+		}
+	}
+	.placeholder-icon {
+		float: left;
+		width: 50px;
+	}
+}

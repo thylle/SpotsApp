@@ -1,0 +1,29 @@
+.user-info {
+	overflow: hidden;
+	padding: 20px;
+	border-bottom: solid 1px #f4f4f4;
+
+	.user-avatar {
+		border-radius: 50%;
+		width: 50px;
+		box-shadow: 0 0 20px rgba(0,0,0,0.5);
+		float: left;
+		margin: 20px 20px 0 0;
+	}
+
+	.user-comment {
+		padding: 35px 0 0 0;
+
+		h4 {
+			font-size: px2em(16);
+			color: #000;
+		}
+	}
+}
+.top-margin {
+	margin-top: 13px;
+
+	&+ .top-margin {
+		margin-top: 13px;
+	}
+}

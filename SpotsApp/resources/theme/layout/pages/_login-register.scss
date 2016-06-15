@@ -1,0 +1,97 @@
+// Full Page Background
+.full-page-bckg {
+		min-height: 100%;
+		@include gradient-vertical($positive, #000);
+		
+		&:after {
+			content: "";
+			background: url(../img/login-bg.png) no-repeat center top;
+			background-size: cover;
+			opacity: 0.3;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			position: absolute;
+			z-index: -1;
+		}
+}
+
+.item.logo-big {
+	text-align: center;
+
+	img {
+		margin: 60px 0;
+		width: 50%;
+		height: auto;
+	}
+	h1 {
+		margin: 50px 0 200px;
+		font-size: px2em(20);
+		text-transform: uppercase;
+		color: #fff;
+	}
+}
+
+.invision-form {
+	color: #fff;
+	
+	a {
+		color: #fff;
+		text-decoration: none;
+	}
+	.list-inset {
+		margin-top: 0;
+
+		.item-input {
+			background: rgba(255,255,255,0.1);
+			border-radius: 50px;
+			margin-bottom: 20px;
+			padding-left: 25px;
+		}
+		textarea {
+			background: rgba(255,255,255,0.1);
+			border-radius: 50px;
+		}
+	}
+}
+.form-button {
+	padding: 0;
+
+	.button {
+		margin: 0;
+		padding: 0;
+	}
+}
+.button.button-primary {
+	background: $positive;
+	color: #fff;
+	border: 0;
+	border-radius: 50px;
+}
+.button.button-light {
+	background: transparent;
+	color: #fff;
+	border: solid 1px #7d746c;
+	border-radius: 50px;
+
+	&:hover,
+	&.activated {
+		background: transparent;
+		color: #fff;
+	}
+}
+.placeholder-icon {
+	color: #fff;
+	font-size: px2em(22);
+}
+textarea,
+input[type="text"], input[type="password"],
+input[type="datetime"], input[type="datetime-local"],
+input[type="date"], input[type="month"], input[type="time"],
+input[type="week"], input[type="number"], input[type="email"],
+input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+	color: #fff;
+	padding-left: 20px;
+	font-weight: normal;
+}

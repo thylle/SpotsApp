@@ -1,0 +1,41 @@
+@import "../../_custom-mixins.scss";
+@import "../../_custom-variables.scss";
+
+
+#map {
+    height: 100%;
+}
+
+.loading{
+    @include transition(opacity linear 0.3s);
+    will-change: opacity;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding-top: 50%;
+    opacity: 0;
+    z-index: $z-index-loading;
+    background: $white;
+
+    &--active{
+        opacity: 1;
+    }
+
+
+    &__content{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: $loading-size;
+        height:  $loading-size;
+        margin-top: -($loading-size / 2);
+        margin-left: -($loading-size / 2);
+    }
+
+    &__img{
+        width: 100%;
+    }
+}

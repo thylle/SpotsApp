@@ -1,0 +1,35 @@
+﻿
+<ion-view>
+    <ion-nav-title>Alle Spots</ion-nav-title>
+    <ion-pane>
+        <ion-content>
+            <ion-list>
+                <ion-item class="category-ion-item  fade-in" data-ui-sref="spot({spotId: item.Id})" data-ng-repeat="item in spots | orderBy : 'Distance' | filter : searchSpots">
+                    <div class="row row-wrap category-items">
+                        <div class="category-item-image col col-33">
+                            <img data-ng-src="{{item.Image}}" alt="{{item.Name}}" />
+                        </div>
+                        <div class="category-item-tools col col-66">
+                            <h3>{{item.Name}}</h3>
+                            <div class="row">
+                                <!--<div class="col col-40"><i class="icon ion-location"></i>{{item.Latitude}} x {{item.Longitude}}</div>-->
+                                <div class="col col-60 item-category">
+                                    <span ng-show="item.DistanceDriving == null">
+                                        <i class="icon ion-plane"></i>{{item.Distance}} km
+                                    </span>
+                                    <span ng-show="item.DistanceDriving != null">
+                                        <i class="icon ion-android-car"></i>{{item.DistanceDriving}} km
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-pane>
+</ion-view>
+
+
+
+

@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+
+    <title>Spots</title>
+
+    <!--<link href="css/ionic.app.min.css" rel="stylesheet" />-->
+    <!--<link href="bundled/3rd-party/ionic.app.css" rel="stylesheet" />-->
+    <link href="bundled/master.css" rel="stylesheet" />
+
+    <script src="js/platformOverrides.js"></script>
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.min.js"></script>
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+    <!-- your app's js -->
+    <!--Google Maps Api - Is before HTML because we need this for a lot of features-->
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD-mzmZW2hh4fsg0WnnyhiIMkpCApvI2sU&sensor=true&libraries=geometry"></script>
+
+    <!--<script src="https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.6655101,-73.89188969999998&destinations=40.6655101,-75.6655101&key=AIzaSyD-mzmZW2hh4fsg0WnnyhiIMkpCApvI2sU"></script>-->
+
+</head>
+<body ng-app="app" class="tab-nav--hide">
+    <div ng-controller="baseController">
+        <div class="loading loading--active">
+            <div class="loading__content">
+                <img src="svg/loading.svg" class="loading__img" />
+            </div>
+        </div>
+
+        <ion-nav-bar class="bar-positive">
+            <ion-nav-back-button>
+            </ion-nav-back-button>
+        </ion-nav-bar>
+
+        <div class="header-filter">
+            <label>
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" placeholder="Søg efter spots..." ng-model="searchSpots.Name" />
+            </label>
+        </div>
+
+        <ion-nav-view></ion-nav-view>
+    </div>
+
+    <ion-tabs class="tabs-icon-top tabs-positive">
+        <ion-tab title="Liste" icon="ion-ios-list-outline" href="#/list">
+        </ion-tab>
+
+        <ion-tab title="Kort" icon="ion-ios-location-outline" href="#/map">
+        </ion-tab>
+    </ion-tabs>
+
+
+    <script src="lib/jquery.min.js"></script>
+    <script src="bundled/angular-app.js"></script>
+    <script src="bundled/services.js"></script>
+    <script src="bundled/modules.js"></script>
+    <script src="bundled/base.js"></script>
+</body>
+</html>

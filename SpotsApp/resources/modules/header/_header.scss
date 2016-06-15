@@ -1,0 +1,51 @@
+@import "../../_custom-mixins.scss";
+@import "../../_custom-variables.scss";
+
+
+body.header-filter--hide{
+
+    .scroll-content{
+        top: $header-height;
+    }
+
+    .header-filter{
+        transform: translate3d(0, -($header-height + $filter-height), 0);
+    }
+}
+
+.header-filter{
+    will-change: transform;
+    @include transition(transform ease 0.3s);
+    z-index: $z-index-header;
+    position: fixed;
+    top: $header-height;
+    width: 100%;
+    height: $filter-height;
+    padding: 0 $default-spacing / 2 $default-spacing / 2;
+    color: $white;
+    background: $brand-primary;    
+
+    label{
+        position: relative;
+        display: block;
+        width: 100%;
+        padding: 0 $default-spacing / 3 0 $default-spacing / 1.5;
+        border-bottom: 1px solid $white;
+    }
+
+    .icon{
+        position: absolute;
+        top: 50%;
+        left: 0;
+        height: $font-size-large;
+        margin: -($font-size-large / 2) 0 0;
+        font-size: $font-size-large;
+        line-height: $font-size-large;
+    }
+
+    input{
+        width: 100%;
+        padding-left: 0;
+        background: transparent;
+    }
+}

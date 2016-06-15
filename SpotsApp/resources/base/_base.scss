@@ -1,0 +1,64 @@
+﻿@import "../_custom-variables.scss";
+@import "../_custom-mixins.scss";
+
+body {
+}
+
+.scroll {
+    height: 100%;
+}
+
+.container{
+    padding: $default-spacing;
+}
+
+.bar {
+    padding: 5px $default-spacing / 2;
+
+    .title{
+        margin: 0 $default-spacing / 2;    
+    }
+}
+
+.scroll-content{
+    @include transition(all ease 0.3s);
+    top: $header-height + $filter-height;
+    bottom: $tabs-height;
+}
+
+.item-content{
+    padding: $default-spacing / 2 0;
+}
+
+
+
+//Overrides ----------------------------- //
+.tabs{
+    border: 0 !important;
+    padding: $default-spacing / 10 0;
+
+    &-striped.tabs-positive .tab-item{
+        color: $white;
+
+        &-active,
+        &.activated{
+            margin: 0 !important;
+            border: 0 !important;
+        }
+    }
+
+    .tab-item{
+        &.tab-item-active .tab-title, 
+        &.active .tab-title, 
+        &.activated .tab-title{
+            padding: 2px;
+            border: 0;
+            border-radius: 0;
+            border-bottom: 1px solid $light;
+        }
+    }
+
+}
+
+
+

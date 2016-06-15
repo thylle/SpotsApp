@@ -1,0 +1,39 @@
+﻿@import "../_custom-variables.scss";
+@import "../_custom-mixins.scss";
+
+.col-spacing{
+    padding: $default-spacing / 2;
+
+    &-sides{
+        padding: 0 $default-spacing / 2;
+    }
+}
+
+
+.default-margin{
+
+    &-bottom{
+        margin-bottom: $default-spacing;
+
+        &-half{
+            margin-bottom: $default-spacing / 2;
+        }
+    }
+}
+
+
+.bg-primary{
+    background-color: $brand-primary;
+}
+
+
+.state--change{
+    .fade-on-state-change{
+        opacity: 0;
+    }
+}
+
+.fade-on-state-change{
+    @include transition(opacity linear 0.3s);
+    opacity: 1;
+}

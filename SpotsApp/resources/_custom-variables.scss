@@ -1,0 +1,140 @@
+﻿//CUSTOM 
+
+//Z-index
+$z-index-list-item:                 3;
+$z-index-list-item-active:          4;
+$z-index-header:                    5;
+$z-index-loading:                   9999;
+
+
+//Custom
+$default-spacing:                   30px !default;
+$header-height:                     44px !default;
+$filter-height:                     55px !default;
+$loading-size:                      50px !default;
+
+
+
+
+
+$white:                             #fff !default;
+$black:                             #181818 !default;
+$brand-error:                       #b96666 !default;
+$green:                             #a1c469;
+
+$gray-darker:                       #333 !default;
+$gray-dark:                         #a1a1a1 !default;
+$gray:                              #cbcbcb !default;
+$gray-light:                        #efefef !default;
+$gray-lighter:                      #f5f5f5 !default;
+
+$brand-primary:                     #00ACC1 !default; //Material 600
+$brand-primary-dark:                #0097A7 !default; //Material 700
+$brand-primary-darker:              #00838F !default; //Material 800
+
+
+$brand-secondary:                   #546E7A !default; //Material 600
+$brand-secondary-dark:              #455A64 !default; //Material 700
+$brand-secondary-darker:            #37474F !default; //Material 800
+
+$text-color:                        $black !default;
+
+$font-size-base:                    13px !default;
+$font-size-large:                   16px !default;
+$font-size-small:                   11px !default;
+
+$font-size-h1:                      18px !default;
+$font-size-h2:                      $font-size-large !default;
+$font-size-h3:                      14px !default;
+$font-size-h4:                      22px !default;
+$font-size-h5:                      18px !default;
+$font-size-h6:                      16px !default;
+
+/*$border-radius-base:                0 !default;
+$border-radius-large:               0 !default;
+$border-radius-small:               0 !default;*/
+
+
+
+
+//Ionic override ----------------------------------------------------------------- //
+$ionicons-font-path:                "../lib/ionic/fonts" !default;
+
+$light:                             $white;
+$stable:                            #f8f8f8;
+$calm:                              #11c1f3;
+$balanced:                          #33cd5f;
+$energized:                         #ffc900;
+$assertive:                         #ef473a;
+$royal:                             #886aea;
+$dark:                              $black;
+
+$positive:                          $brand-primary;
+
+$base-color:                        $black;
+$base-background-color:             $white;
+
+$font-family-custom:                'Montserrat', sans-serif;
+$font-family-sans-serif:            $font-family-custom;
+$font-family-light-sans-serif:      $font-family-custom;
+
+$line-height-base:                  2 !default; // 26/13
+
+$item-font-size:                    $font-size-base !default;
+$item-border-width:                 0 !default;
+$item-padding:                      0 !default;
+
+$grid-padding-width:                0 !default;
+
+$tabs-height:                       55px !default;
+
+// Import Montserrat Webfont
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+
+
+
+
+
+
+/* Scaffolding*/
+/*$body-bg:                           $gray-lighter !default;
+$text-color:                        #f0a !default;
+$link-color:                        $brand-primary !default;
+$link-hover-color:                  $brand-primary-dark !default;
+$link-hover-decoration:             none;
+
+
+$grid-gutter-width:                 20px !default;*/
+
+
+/*FONTS*/
+/*$icon-font-path:                    "../../Fonts/";
+$font-family-sans-serif:            "Roboto", sans-serif !default;
+$font-family-alt:                   "Montserrat", sans-serif !default;
+$font-family-base:                  $font-family-sans-serif !default;
+$line-height-base:                  1.1 !default;
+$headings-font-weight:              300 !default;
+$headings-line-height:              1.0em !default;
+
+
+$font-size-base:                    22px !default;
+$font-size-large:                   24px !default;
+$font-size-small:                   14px !default;
+
+$font-size-title:                   76px !default;
+$font-size-branding:                46px !default;
+$font-size-teaser:                  40px !default;
+
+$font-size-h1:                      36px !default;
+$font-size-h2:                      30px !default;
+$font-size-h3:                      26px !default;
+$font-size-h4:                      22px !default;
+$font-size-h5:                      18px !default;
+$font-size-h6:                      16px !default;*/
+
+
+
+
+
+
+

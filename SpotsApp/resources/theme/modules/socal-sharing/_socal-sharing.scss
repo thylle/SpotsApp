@@ -1,0 +1,60 @@
+.social-sharing {
+    padding: 0 20px 10px 20px;
+
+    .button {
+        margin-right: 8px;
+        margin-bottom: 10px;
+        min-width: 49px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        .icon {
+            margin: 0;
+            color: #fff;
+        }
+        &.share-facebook {
+            background-color: #3b5998;
+
+            &.activated {
+              background-color: darken(#3b5998, 10%);
+            }
+        }
+        &.share-twitter {
+            background-color: #00aced;
+
+            &.activated {
+              background-color: darken(#00aced, 10%);
+            }
+        }
+        &.share-whatsapp {
+            background-color: #13990a;
+
+            &.activated {
+              background-color: darken(#13990a, 10%);
+            }
+        }
+        &.share-anywhere {
+            background-color: #ffa500;
+
+            &.activated {
+              background-color: darken(#ffa500, 10%);
+            }
+        }
+        &.share-message {
+            background-color: #38e633;
+
+            &.activated {
+              background-color: darken(#38e633, 10%);
+            }
+        }
+        &.share-email {
+            background-color: #1d6fb5;
+
+            &.activated {
+              background-color: darken(#1d6fb5, 10%);
+            }
+        }
+    }
+}

@@ -1,0 +1,50 @@
+﻿<ion-view view-title="{{currentSpot.Name}}">
+    <ion-pane>
+        <ion-content>
+            <ion-item class="ion-item">
+                <div class="item-image  fade-on-state-change" ng-style="{'background-image': 'url(' + currentSpot.Image + ')'}" >
+                    <div class="item-image__text">
+                        <span>{{currentSpot.Name}}</span>
+
+                        <span class="right-align"><i class="icon ion-plane"></i> {{currentSpot.Distance}} km</span>
+                    </div>
+                </div>
+                <div class="item-content article-content">
+                    <div class="row  col-spacing-sides  center-align">
+                        <div class="col">
+                            <strong>Vejret lige nu</strong>
+                        </div>
+                    </div>
+                    <div class="row item-tools">
+                        <div class="col col-33"><i class="icon ion-cloud"></i> 11 m/s
+                        </div>
+                        <div class="col col-33 center-align"><i class="icon ion-android-compass"></i> NNW
+                        </div>
+                        <div class="col col-33 right-align item-category"><i class="icon ion-ios-speedometer-outline"></i> 0.8m
+                        </div>
+                        <!-- <a data-ui-sref="app.category({categoryId: itemCtrl.category.id})">{{itemCtrl.category.title}}</a> -->
+                    </div>
+
+                    <div class="row  col-spacing-sides  default-margin-bottom-half  center-align">
+                        <div class="col">
+                            <a href="#"><i class="icon ion-checkmark-round"></i> JEG SURFER HER</a>
+                            <br/>
+                        </div>
+                    </div>
+
+                    <div class="row  col-spacing-sides">
+                        <div class="col">
+                            <pre class="item-description  fade-on-state-change">{{currentSpot.Description}}</pre>
+                        </div>
+                    </div>
+                    <!--<srf-social-share data-config="itemCtrl.share"></srf-social-share>-->
+                </div>
+                <div class="item-next">
+                    <h4 class="next-story">NEXT SPOT</h4>
+                    <h2>Hvide Sande Kabelpark - 104km</h2>
+                    <i class="icon ion-ios-arrow-right item-next-icon"></i>
+                </div>
+            </ion-item>
+        </ion-content>
+    </ion-pane>
+</ion-view>
