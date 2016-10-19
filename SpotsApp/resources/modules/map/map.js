@@ -16,47 +16,37 @@ function setMarkers(map, scope) {
         var long = scope.spots[i].Longitude;
         var markerIcon = "http://labs.google.com/ridefinder/images/mm_20_blue.png";
 
-        if (scope.spots[i].Id == 1055 || scope.spots[i].Id == 1056) {
-            markerIcon = "http://labs.google.com/ridefinder/images/mm_20_orange.png";
-        }
-
         //If element don't have lat and long, we stop adding the marker
-        if (lat == "" && long == "") {
-            return;
+        if (lat != "" && long != "") {
+            if (scope.spots[i].Category == "Kite") {
+                markerIcon = "http://labs.google.com/ridefinder/images/mm_20_orange.png";
+            }
+
+            var position = new google.maps.LatLng(lat, long);
+
+            var marker = new google.maps.Marker({
+                map: map,
+                title: name,
+                position: position,
+                icon: markerIcon
+            });
+
+
+            var infowindow = new google.maps.InfoWindow();
+            infoWindows.push(infowindow);
+
+            var content = "<h5>" + name + "</h5>";
+
+            google.maps.event.addListener(marker, 'click', (function (marker, content, infowindow) {
+                return function () {
+                    closeAllInfoWindows();
+
+                    infowindow.setContent(content);
+                    infowindow.open(map, marker);
+                };
+            })(marker, content, infowindow));
         }
-
-        var position = new google.maps.LatLng(lat, long);
-
-        var marker = new google.maps.Marker({
-            map: map,
-            title: name,
-            position: position,
-            icon: markerIcon
-        });
-
-
-        var infowindow = new google.maps.InfoWindow();
-        infoWindows.push(infowindow);
-
-        var content = "<h5>" + name + "</h5>";
-
-        google.maps.event.addListener(marker, 'click', (function (marker, content, infowindow) {
-            return function () {
-                closeAllInfoWindows();
-
-                infowindow.setContent(content);
-                infowindow.open(map, marker);
-            };
-        })(marker, content, infowindow));
     }
-}
-
-function getDistanceFromCurrentPosition(currentPosition, lat, long) {
-    var to = new google.maps.LatLng(lat, long);
-    var dist = google.maps.geometry.spherical.computeDistanceBetween(currentPosition, to);
-    dist = (dist / 1000).toFixed(1);
-
-    return parseInt(dist);
 }
 
 function createGoogleMaps(scope, currentLocation) {

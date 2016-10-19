@@ -1,49 +1,135 @@
-﻿<ion-view view-title="{{currentSpot.Name}}">
+﻿<ion-view view-title="">
     <ion-pane>
         <ion-content>
             <ion-item class="ion-item">
-                <div class="item-image  fade-on-state-change" ng-style="{'background-image': 'url(' + currentSpot.Image + ')'}" >
+
+                <div class="item-image  fade-on-state-change">
+                    <div class="item-image__background" data-ng-style="{'background-image': 'url({{currentSpotImage}})'}" data-ng-if="currentSpotImage"></div>
+
                     <div class="item-image__text">
                         <span>{{currentSpot.Name}}</span>
 
-                        <span class="right-align"><i class="icon ion-plane"></i> {{currentSpot.Distance}} km</span>
+                        <span class="item-image__text--right" data-ng-show="currentSpot.Distance">
+                            <span data-ng-hide="currentSpot.DrivingDistance">
+                                {{currentSpot.Distance}} km <i class="icon ion-plane"></i>
+                            </span>
+                            <span data-ng-show="currentSpot.DrivingDistance">
+                                <i class="icon ion-android-car"></i>
+                                {{currentSpot.DrivingDistance}}.<br />
+                                {{currentSpot.DrivingDuration}}
+                            </span>
+                        </span>
                     </div>
                 </div>
+
+                <!--Compare Overview-->
+                <div class="compare-overview" data-ng-click="overviewActive = !overviewActive" data-ng-class="{'active' : overviewActive}">
+                    <div class="compare-overview__container">
+                        <div class="compare-overview__item">
+                            <span class="icon icon ion-speedometer"></span>
+                            <span>5 m/s</span>
+                        </div>
+                        <div class="compare-overview__item">
+                            <span class="icon icon ion-navigate"></span>
+                            <span>SV</span>
+                        </div>
+                        <div class="compare-overview__item">
+                            <span class="icon icon ion-stats-bars"></span>
+                            <span>1m</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Compare Container (hidden by default)-->
+                <div class="compare__container" data-ng-show="overviewActive">
+                    <div class="compare__item">
+                        <div class="compare__col compare__col--headline">Lige nu</div>
+                        <div class="compare__col compare__col--headline"></div>
+                        <div class="compare__col compare__col--headline">Optimalt</div>
+                    </div>
+
+                    <div class="compare__item">
+                        <div class="compare__col">5 m/s</div>
+                        <div class="compare__col compare__col--icon">
+                            <span class="icon ion-speedometer"></span>
+                        </div>
+                        <div class="compare__col">8 m/s</div>
+                    </div>
+
+                    <div class="compare__item">
+                        <div class="compare__col">SV</div>
+                        <div class="compare__col compare__col--icon">
+                            <span class="icon ion-navigate"></span>
+                        </div>
+                        <div class="compare__col">VNV</div>
+                    </div>
+
+                    <div class="compare__item">
+                        <div class="compare__col">1m</div>
+                        <div class="compare__col compare__col--icon">
+                            <span class="icon ion-stats-bars"></span>
+                        </div>
+                        <div class="compare__col">0.5m</div>
+                    </div>
+                </div>
+
+
                 <div class="item-content article-content">
-                    <div class="row  col-spacing-sides  center-align">
-                        <div class="col">
-                            <strong>Vejret lige nu</strong>
-                        </div>
-                    </div>
-                    <div class="row item-tools">
-                        <div class="col col-33"><i class="icon ion-cloud"></i> 11 m/s
-                        </div>
-                        <div class="col col-33 center-align"><i class="icon ion-android-compass"></i> NNW
-                        </div>
-                        <div class="col col-33 right-align item-category"><i class="icon ion-ios-speedometer-outline"></i> 0.8m
-                        </div>
-                        <!-- <a data-ui-sref="app.category({categoryId: itemCtrl.category.id})">{{itemCtrl.category.title}}</a> -->
-                    </div>
 
-                    <div class="row  col-spacing-sides  default-margin-bottom-half  center-align">
-                        <div class="col">
-                            <a href="#"><i class="icon ion-checkmark-round"></i> JEG SURFER HER</a>
-                            <br/>
-                        </div>
-                    </div>
-
-                    <div class="row  col-spacing-sides">
-                        <div class="col">
-                            <pre class="item-description  fade-on-state-change">{{currentSpot.Description}}</pre>
-                        </div>
-                    </div>
-                    <!--<srf-social-share data-config="itemCtrl.share"></srf-social-share>-->
+                    <!-- <a data-ui-sref="app.category({categoryId: itemCtrl.category.id})">{{itemCtrl.category.title}}</a> -->
                 </div>
-                <div class="item-next">
+
+                <!--<div class="row  col-spacing-sides  default-margin-bottom-half  center-align">
+                    <div class="col">
+                        <button data-ng-click="checkIn()"><i class="icon ion-checkmark-round"></i> JEG SURFER HER {{currentSpot.CheckIns}}</button>
+                        <br />
+                    </div>
+                </div>-->
+
+                <div class="default-margin-bottom-half clearfix">
+                    <div class="check-in">
+                        <div class="check-in__col">
+                            <div class="check-in__count-container">
+                                <span class="check-in__count">
+                                    {{currentSpot.CheckIns}}
+                                    <span class="check-in__label">Surfer her</span>
+                                </span>
+                                <button class="btn btn-primary check-in__button" data-ng-click="checkIn()" data-ng-class="{'active' : userCheckedIn}">Jeg surfer her</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row  col-spacing-sides">
+                    <div class="col">
+                        <pre class="item-description  fade-on-state-change">{{currentSpot.Description}}</pre>
+                    </div>
+                </div>
+                <!--<srf-social-share data-config="itemCtrl.share"></srf-social-share>-->
+
+
+                <div class="row">
+                    <div class="col col-50  devider--right">
+                        <a href="http://ifm.fcoo.dk/denmark/#zoom=7&lat=55.7&lon=11.1&locate=false&follow=false&level=0&layer=FCOO%20Standard&overlays=Short%20range%20forecasts.windspeed%252CShort%20range%20forecasts.winddirection%252CSafety.MSI%252CSafety.Firing%20warnings" target="_blank" class="item-next">
+                            <h4 class="next-story">fcoo.dk</h4>
+                            <h2>Vejrudsigt</h2>
+                            <i class="icon ion-ios-cloud item-next-icon"></i>
+                        </a>
+                    </div>
+                    <div class="col col-50">
+                        <a href="http://maps.google.com/?q={{currentSpot.Latitude}},{{currentSpot.Longitude}}" target="_blank" class="item-next">
+                            <h4 class="next-story">Google Maps</h4>
+                            <h2>Find vej</h2>
+                            <i class="icon ion-location item-next-icon"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!--<div class="item-next">
                     <h4 class="next-story">NEXT SPOT</h4>
                     <h2>Hvide Sande Kabelpark - 104km</h2>
                     <i class="icon ion-ios-arrow-right item-next-icon"></i>
-                </div>
+                </div>-->
             </ion-item>
         </ion-content>
     </ion-pane>

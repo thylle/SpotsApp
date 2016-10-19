@@ -13,6 +13,12 @@ body.header-filter--hide{
     }
 }
 
+.bar-positive.nav-bar-container{
+    display: block;
+    min-height: $header-height;
+    background: $brand-error;
+}
+
 .header-filter{
     will-change: transform;
     @include transition(transform ease 0.3s);
@@ -21,31 +27,72 @@ body.header-filter--hide{
     top: $header-height;
     width: 100%;
     height: $filter-height;
-    padding: 0 $default-spacing / 2 $default-spacing / 2;
     color: $white;
     background: $brand-primary;    
 
-    label{
-        position: relative;
-        display: block;
-        width: 100%;
-        padding: 0 $default-spacing / 3 0 $default-spacing / 1.5;
-        border-bottom: 1px solid $white;
-    }
-
-    .icon{
+    //Hack to give blue background to whole header when loading content - because Ionic header hasent been loaded.
+    &:before{
+        content: "";
         position: absolute;
-        top: 50%;
-        left: 0;
-        height: $font-size-large;
-        margin: -($font-size-large / 2) 0 0;
-        font-size: $font-size-large;
-        line-height: $font-size-large;
+        bottom: 100%;
+        width: 100%;
+        height: $header-height*2;
+        background: $brand-primary;
     }
 
-    input{
-        width: 100%;
-        padding-left: 0;
-        background: transparent;
+    &__search{
+        padding: 0 $default-spacing / 2;
+        margin-bottom: $default-spacing/3;
+
+        label{
+            position: relative;
+            display: block;
+            width: 100%;
+            padding: 0 $default-spacing / 3 0 $default-spacing / 1.5;
+            border-bottom: 1px solid $white;
+        }
+
+        .icon{
+            position: absolute;
+            top: 50%;
+            left: 0;
+            height: $font-size-large;
+            margin: -($font-size-large / 2) 0 0;
+            font-size: $font-size-large;
+            line-height: $font-size-large;
+        }
+
+        input{
+            width: 100%;
+            padding-left: 0;
+            background: transparent;
+        }
+    }
+    
+
+    &__category{
+        @include clearfix;
+        text-align: center;
+    }
+
+    &__button-col{
+        width: 33.3%;
+        float: left;
+        padding: 0 $default-spacing/2;
+
+        button{
+            display: block;
+            width: 100%;
+            padding: 0;
+            line-height: 2.2em;
+            color: $white;
+            border: 1px solid $white;
+            background: transparent;
+
+            &.active{
+                color: $brand-primary;
+                background: $white;
+            }
+        }
     }
 }

@@ -1,31 +1,190 @@
 
 
-var loadingContainer = $(".loading");
-var loadingContent = $(loadingContainer).find(".loading__content");
+var loadingContainer = $(".message__container");
+var loadingContent = $(loadingContainer).find(".message__spinner");
 var loadingElementClone = "";
-var loadingActiveClass = "loading--active";
+var loadingActiveClass = "message__container--active";
 
 function showLoading(scope) {
     scope.isLoading = true;
+    //loadingContainer.addClass(loadingActiveClass);
 
-    loadingContainer.addClass(loadingActiveClass);
-
-    $(loadingContent).append(loadingElementClone);
+    //$(loadingContent).append(loadingElementClone);
 }
 
 function hideLoading(scope) {
-    scope.isLoading = false;
 
-    loadingContainer.removeClass(loadingActiveClass);
+    setTimeout(function () {
+        scope.isLoading = false;
 
-    loadingElementClone = $(loadingContent).find("img").clone();
+        //loadingContainer.removeClass(loadingActiveClass);
 
+        //loadingElementClone = $(loadingContent).find("img").clone();
 
-    //remove the loading image from the DOM, to reduce CPU usage because of the animation
-    setTimeout(function() {
-        $(loadingContent).find("img").remove();
-    }, 1500);
+        //remove the loading image from the DOM, to reduce CPU usage because of the animation
+        //setTimeout(function () {
+        //    $(loadingContent).find("img").remove();
+        //}, 1500);
+    }, 800);
 }
+
+
+(function () {
+    'use strict';
+
+    angular
+        .module('app')
+        .service('spotsService', initService);
+
+    initService.$inject = ["$http", "settings"];
+
+    function initService($http, settings) {
+        this.getAllSpots = getAllSpots;
+        this.getSpotById = getSpotById;
+        this.checkInOnSpot = checkInOnSpot;
+
+        var domainUrl = settings.domain;
+
+        function getAllSpots() {
+            var apiUrl = "/Umbraco/Api/Spots/GetAllSpots";
+            var url = domainUrl + apiUrl;
+            
+            return $http.get(url);
+        }
+
+        function getSpotById(id) {
+            var apiUrl = "/Umbraco/Api/Spots/GetSpotById?spotId=" + id;
+            var url = domainUrl + apiUrl;
+
+            return $http.get(url);
+        }
+
+        function checkInOnSpot(id) {
+            var apiUrl = "/Umbraco/Api/Spots/CheckIn?spotId=" + id;
+            var url = domainUrl + apiUrl;
+
+            return $http.post(url);
+        }
+    }
+})();
+
+
+
+    var spots = {
+        init: function () {
+
+        },
+
+        //Get all spots
+        getAllSpots: function ($scope, $timeout, spotsService, distanceService) {
+            spotsService.getAllSpots().success(function (response) {
+                $scope.spots = response;
+
+                console.log("success", response);
+
+                //Get current position + a number to count attempts
+                spots.getCurrentPosition(0, $scope, distanceService);
+            })
+            .error(function () {
+                alert("*** ERROR *** All Spots");
+                $scope.pageFailed = true;
+                $scope.isLoading = false;
+            });
+        },
+
+        //Get Current spot by ID from the URL
+        getCurrentSpot: function ($scope, spotsService, id, settings) {
+            spotsService.getSpotById(id).success(function (response) {
+                console.log("getCurrentSpot", response);
+
+                $scope.currentSpot = response;
+                $scope.currentSpotImage = settings.domain + $scope.currentSpot.Image + "?width=400&height=200&mode=crop&format=jpg";
+            })
+            .error(function () {
+                alert("*** ERROR *** Current Spot");
+                $scope.pageFailed = true;
+                $scope.isLoading = false;
+            });
+        },
+
+        //setCurrentSpotFromItem: function ($scope, settings, item) {
+        //    $scope.currentSpot = item;
+        //    $scope.currentSpotImage = settings.domain + item.Image + "?width=400&height=200&mode=crop&format=jpg";
+
+        //    console.log("set", $scope.currentSpot);
+        //},
+
+        //Get users current position
+        getCurrentPosition: function (countAttempts, $scope, distanceService) {
+            countAttempts++;
+
+            console.log("getCurrentPosition CountAttempts", countAttempts);
+
+            //If we have tried 5 times, we stop trying and hide the loading screen
+            if (countAttempts >= 5) {
+                $scope.isLoading = false;
+                $scope.$apply();
+                return;
+            }
+
+            //Get current position and continue the flow - Else try again after X seconds
+            if (distanceService.getCurrentPosition() != null) {
+                spots.updateSpotsDistanceInfo($scope, distanceService);
+
+                if ($scope.currentSpot != null) {
+                    distanceService.updateItemDistanceInfo($scope.currentSpot);
+                }
+
+            } else {
+                setTimeout(function () {
+                    spots.getCurrentPosition(countAttempts, $scope, distanceService);
+                    $scope.isLoading = false;
+                }, 2000);
+            }
+        },
+
+        //Adding distance from Google to every spot
+        updateSpotsDistanceInfo: function ($scope, distanceService) {
+            console.log("updateSpotsDistanceInfo");
+
+            for (var i = 0; i < $scope.spots.length; i++) {
+                var item = $scope.spots[i];
+
+                if (item.Latitude != "" && item.Longitude != "") {
+                    distanceService.updateItemDistanceInfo(item);
+                }
+            }
+
+            //Hide loading
+            $scope.isLoading = false;
+        },
+
+        //Let users check-in on the current spot
+        checkIn: function ($scope, spotsService, settings) {
+            if ($scope.currentSpot != null) {
+                $scope.userCheckedIn = true;
+
+                spotsService.checkInOnSpot($scope.currentSpot.Id).success(function (response) {
+                    console.log("check-in success", response);
+                    
+                    spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings);
+                })
+                .error(function () {
+                    alert("*** ERROR *** Check-In");
+
+                    $scope.userCheckedIn = false;
+                    $scope.pageFailed = true;
+                    $scope.isLoading = false;
+                });
+            }
+        },
+    }
+
+
+
+
+
+
 
 
 //Close All Info Windows
@@ -45,47 +204,37 @@ function setMarkers(map, scope) {
         var long = scope.spots[i].Longitude;
         var markerIcon = "http://labs.google.com/ridefinder/images/mm_20_blue.png";
 
-        if (scope.spots[i].Id == 1055 || scope.spots[i].Id == 1056) {
-            markerIcon = "http://labs.google.com/ridefinder/images/mm_20_orange.png";
-        }
-
         //If element don't have lat and long, we stop adding the marker
-        if (lat == "" && long == "") {
-            return;
+        if (lat != "" && long != "") {
+            if (scope.spots[i].Category == "Kite") {
+                markerIcon = "http://labs.google.com/ridefinder/images/mm_20_orange.png";
+            }
+
+            var position = new google.maps.LatLng(lat, long);
+
+            var marker = new google.maps.Marker({
+                map: map,
+                title: name,
+                position: position,
+                icon: markerIcon
+            });
+
+
+            var infowindow = new google.maps.InfoWindow();
+            infoWindows.push(infowindow);
+
+            var content = "<h5>" + name + "</h5>";
+
+            google.maps.event.addListener(marker, 'click', (function (marker, content, infowindow) {
+                return function () {
+                    closeAllInfoWindows();
+
+                    infowindow.setContent(content);
+                    infowindow.open(map, marker);
+                };
+            })(marker, content, infowindow));
         }
-
-        var position = new google.maps.LatLng(lat, long);
-
-        var marker = new google.maps.Marker({
-            map: map,
-            title: name,
-            position: position,
-            icon: markerIcon
-        });
-
-
-        var infowindow = new google.maps.InfoWindow();
-        infoWindows.push(infowindow);
-
-        var content = "<h5>" + name + "</h5>";
-
-        google.maps.event.addListener(marker, 'click', (function (marker, content, infowindow) {
-            return function () {
-                closeAllInfoWindows();
-
-                infowindow.setContent(content);
-                infowindow.open(map, marker);
-            };
-        })(marker, content, infowindow));
     }
-}
-
-function getDistanceFromCurrentPosition(currentPosition, lat, long) {
-    var to = new google.maps.LatLng(lat, long);
-    var dist = google.maps.geometry.spherical.computeDistanceBetween(currentPosition, to);
-    dist = (dist / 1000).toFixed(1);
-
-    return parseInt(dist);
 }
 
 function createGoogleMaps(scope, currentLocation) {

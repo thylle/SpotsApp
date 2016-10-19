@@ -1,119 +1,58 @@
-﻿(function() {
-    initController.$inject = ["$rootScope", "$scope", "$timeout", "spotsService", "$http"];
+﻿
+
+(function () {
+    initController.$inject = ["$rootScope", "$scope", "$timeout", "spotsService", "distanceService", "settings"];
 
     angular
         .module("app")
         .controller("baseController", initController);
 
-    function initController($rootScope, $scope, $timeout, spotsService, $http) {
-
+    function initController($rootScope, $scope, $timeout, spotsService, distanceService, settings) {
+        $scope.domain = settings.domain;
         $scope.isLoading = true;
+        $scope.pageFailed = false;
+        $scope.mapCreated = false;
+        $scope.overviewActive = false;
         $scope.spots = [];
         $scope.currentSpot = null;
-        $scope.mapCreated = false;
-        var currentPosition = null;
-        var currentLatitude = null;
-        var currentLongitude = null;
+        $scope.categoryFilter = '';
+        $scope.userCheckedIn = false;
 
-
-        var flow = {
-            init: function() {
-                flow.getAllSpots();
+        //TODO API Controller
+        $scope.categories = [
+            {
+                Name: "Alle",
+                Filter: ""
             },
-
-            //Get all spots
-            getAllSpots: function() {
-                spotsService.getAllSpots().success(function(response) {
-                        $scope.spots = response;
-
-                        console.log("success", response);
-
-                        //Get current position + a number to count attempts
-                        flow.getCurrentPosition(0);
-                    })
-                    .error(function(response) {
-                        alert("*** ERROR *** All Spots", response);
-                    });
+            {
+                Name: "Kite",
+                Filter: "kite"
             },
-
-            //Get users current position
-            getCurrentPosition: function(countAttempts) {
-                countAttempts++;
-
-                console.log("getCurrentPosition CountAttempts", countAttempts);
-
-                //If we have tried 5 times or more, we stop trying and hide the loading screen
-                if (countAttempts >= 5) {
-                    hideLoading($scope);
-                    return;
-                }
-
-                navigator.geolocation.getCurrentPosition(function(pos) {
-                    currentLatitude = pos.coords.latitude;
-                    currentLongitude = pos.coords.longitude;
-                    currentPosition = new google.maps.LatLng(currentLatitude, currentLongitude);
-                });
-
-                //If the current position is not found - try again after x seconds
-                if (currentPosition != null) {
-                    flow.addDistancesToSpots();
-
-                    if ($scope.currentSpot != null) {
-                        flow.addDistanceToCurrentSpot($scope.currentSpot);
-                    }
-
-                } else {
-                    $timeout(function() {
-                        flow.getCurrentPosition(countAttempts);
-                    }, 1000);
-                }
-            },
-
-
-//Adding distance from Google to every spot
-            addDistancesToSpots: function() {
-                console.log("addDistanceToSpots");
-
-                for (var i = 0; i < $scope.spots.length; i++) {
-                    var item = $scope.spots[i];
-
-                    if (item.Latitude != "" && item.Longitude != "") {
-                        addDistanceInfoToSpot(item, currentLatitude, currentLongitude);
-                    }
-                }
-
-                //Hide loading
-                $timeout(function() {
-                    hideLoading($scope);
-                }, 800);
-            },
-
-            addDistanceToCurrentSpot: function(currentSpot) {
-                if (currentSpot.Latitude != "" && currentSpot.Longitude != "" && currentPosition != null) {
-                    currentSpot.Distance = getDistanceFromCurrentPosition(currentPosition, currentSpot.Latitude, currentSpot.Longitude);
-                }
+            {
+                Name: "Cable",
+                Filter: "cable"
             }
+        ];
+
+        //Category filter in the header
+        $scope.filterByCategory = function (item) {
+            $scope.categoryFilter = item.Filter;
         }
 
-
+        
         //Wait for the document to load
         //We can do this because all content is coming from Angular
-        $(window).load(function() {
-            flow.init();
+        $(window).load(function () {
+            spots.getAllSpots($scope, $timeout, spotsService, distanceService);
         });
 
-        //TODO - Make smarter ------------------------------------------------------------------------------------------------------------------ TODO //
-        function addDistanceInfoToSpot(spot, currentLat, currentLong) {
+        //$scope.setCurrentSpot = function (item) {
+        //    spots.setCurrentSpotFromItem($scope, settings, item);
+        //}
 
-            spot.Distance = getDistanceFromCurrentPosition(currentPosition, spot.Latitude, spot.Longitude);
-
-            spotsService.getDistanceInfo(currentLat, currentLong, spot.Latitude, spot.Longitude).then(function(response) {
-                var drivingDistanceText = response.data.rows[0].elements[0].distance.text;
-                var drivingDurationText = response.data.rows[0].elements[0].duration.text;
-
-                spot.DrivingDistance = drivingDistanceText;
-                spot.DrivingDuration = drivingDurationText;
-            });
+        //Check in on a spot
+        $scope.checkIn = function () {
+            spots.checkIn($scope, spotsService, settings);
         }
 
 
@@ -121,27 +60,18 @@
         //This is initialized on load as well.
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
 
+            //state animations and hiding elements in different states
             stateChange(toState);
 
-            //console.log("toState", toState);
-            //console.log("toParams", toParams);
+            console.log("toParams", toParams.spotId);
 
-            if (toState.name == "spot") {
 
-                //Get spot by ID
-                spotsService.getSpotById(toParams.spotId).success(function(response) {
-
-                    $scope.currentSpot = response;
-
-                    flow.addDistanceToCurrentSpot($scope.currentSpot);
-
-                }).error(function() {
-                    alert("ERROR GETTING CURRENT SPOT");
-                });
-
-            } else {
-                //Empty currentSpot if the view is not where the spot is shown
+            //Empty currentSpot if the view is not where the spot is shown
+            if (toState.name != "spot") {
                 $scope.currentSpot = null;
+                $scope.currentSpotImage = null;
+            } else {
+                spots.getCurrentSpot($scope, spotsService, toParams.spotId, settings);
             }
 
             //Timeout to add data to spots and make view ready
@@ -154,7 +84,7 @@
                     $scope.mapCreated = false;
                 }
                 if (!$scope.mapCreated && $mapContainer.length > 0) {
-                    createGoogleMaps($scope, currentPosition);
+                    createGoogleMaps($scope, distanceService.getCurrentPosition());
                     $scope.mapCreated = true;
                 }
             }, 1000);

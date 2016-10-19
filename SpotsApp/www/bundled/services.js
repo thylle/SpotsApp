@@ -3,30 +3,35 @@
 
     angular
         .module('app')
-        .service('spotsService', initService);
+        .service('distanceService', initService);
 
     initService.$inject = ["$http"];
 
     function initService($http) {
-        this.getAllSpots = getAllSpots;
-        this.getSpotById = getSpotById;
-        this.getDistanceInfo = getDistanceInfo;
+        this.getCurrentPosition = getCurrentPosition;
+        this.updateItemDistanceInfo = updateItemDistanceInfo;
 
-        var ngrokUrl = "http://2c3c7b22.ngrok.io";
+        var currentPosition = null;
+        var currentLatitude = null;
+        var currentLongitude = null;
 
-        function getAllSpots() {
-            var ngrokUrl = "http://2c3c7b22.ngrok.io";
-            var apiUrl = "/Umbraco/Api/Spots/GetAllSpots";
-            var url = ngrokUrl + apiUrl;
-            
-            return $http.get(url);
+
+        function getCurrentPosition() {
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                currentLatitude = pos.coords.latitude;
+                currentLongitude = pos.coords.longitude;
+                currentPosition = new google.maps.LatLng(currentLatitude, currentLongitude);
+            });
+
+            return currentPosition;
         }
 
-        function getSpotById(id) {
-            var apiUrl = "/Umbraco/Api/Spots/GetSpotById?spotId=" + id;
-            var url = ngrokUrl + apiUrl;
+        function getDistanceFromCurrentPosition(currentPosition, lat, long) {
+            var to = new google.maps.LatLng(lat, long);
+            var dist = google.maps.geometry.spherical.computeDistanceBetween(currentPosition, to);
+            dist = (dist / 1000).toFixed(1);
 
-            return $http.get(url);
+            return parseInt(dist);
         }
 
         function getDistanceInfo(currentLatitude, currentLongitude, spotLatitude, spotLongitude) {
@@ -39,6 +44,22 @@
             var finalDistanceUrl = googleDistanceUrl + originsUrl + destinationsUrl + googleApiKey;
 
             return $http.get(finalDistanceUrl);
+        }
+
+        function updateItemDistanceInfo(spot) {
+
+            if (spot.Latitude != "" && spot.Longitude != "" && currentPosition != null) {
+
+                spot.Distance = getDistanceFromCurrentPosition(currentPosition, spot.Latitude, spot.Longitude);
+
+                getDistanceInfo(currentLatitude, currentLongitude, spot.Latitude, spot.Longitude).then(function (response) {
+                    var drivingDistanceText = response.data.rows[0].elements[0].distance.text;
+                    var drivingDurationText = response.data.rows[0].elements[0].duration.text;
+
+                    spot.DrivingDistance = drivingDistanceText;
+                    spot.DrivingDuration = drivingDurationText;
+                });
+            }
         }
     }
 })();

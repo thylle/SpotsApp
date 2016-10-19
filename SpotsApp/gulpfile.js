@@ -46,15 +46,15 @@ var scriptBundles = [
 function bundleJs() {
     scriptBundles.forEach(function (item) {
         gulp.src(item.scripts)
-            .pipe(plugins.concat(item.output))
+            .pipe(concat(item.output))
             .pipe(gulp.dest(src.bundled));
     });
 }
 function minifyJs() {
     scriptBundles.forEach(function (item) {
         gulp.src(item.scripts)
-            .pipe(plugins.concat(item.output))
-            .pipe(plugins.rename({ suffix: ".min" }))
+            .pipe(concat(item.output))
+            .pipe(rename({ suffix: ".min" }))
             .pipe(plugins.uglify())
             .pipe(gulp.dest(src.bundled));
     });
@@ -77,23 +77,20 @@ gulp.task("development", ["bundleJs"], function() {
         .pipe(minifyCss({
             keepSpecialComments: 0
         }))
-        //.pipe(rename({ extname: '.min.css' }))
-        //.pipe(gulp.dest(src.bundled))
         .pipe(plugins.browserSync.stream()) //Init browser sync to push changes to browser
-        .pipe(plugins.notify({ message: "Development files processed" }));
+        .pipe(plugins.notify({ title: "Development", message: "All files processed", onLast: true }));
 });
 
 gulp.task("production", ["development", "bundleJs", "minifyJs"], function () {
     gulp.src(src.styles)
         .pipe(sass())
         .on("error", sass.logError)
-        .pipe(gulp.dest(src.bundled))
         .pipe(minifyCss({
             keepSpecialComments: 0
         }))
         .pipe(rename({ extname: '.min.css' }))
         .pipe(gulp.dest(src.bundled))
-        .pipe(plugins.notify({ message: "Production Ready" }));
+        .pipe(plugins.notify({ title: "Production", message: "All files processed", onLast: true }));
 });
 
 

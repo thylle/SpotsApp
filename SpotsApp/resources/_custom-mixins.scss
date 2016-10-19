@@ -1,35 +1,17 @@
 ﻿@import "_custom-variables.scss";
-//@import "3rd-party/libraries/bootstrap/_mixins.scss";
 
 
-//Breakpoints
-@mixin breakpoint($name) {
-    $lg: "(max-width: 1200px)";
-    $md: "(max-width: 1020px)";
-    $sm: "(max-width: 992px)";
-    $xs: "(max-width: 767px)";
-    $xxs: "(max-width: 480px)";
 
-    @if $name == lg {
-        @media #{$lg} {
-            @content;
-        }
-    }
-    @else if $name == md {
-        @media #{$md} {
-            @content;
-        }
-    }
-    @else if $name == sm {
-        @media #{$sm} {
-            @content;
-        }
-    }
-    @else if $name == xs {
-        @media #{$xs} {
-            @content;
-        }
-    }
+
+@mixin clearfix() {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
 }
 
 
@@ -60,6 +42,24 @@
     content: "\e258";
 }
 
+
+@mixin placeholder-color($color: $gray){
+    &::-webkit-input-placeholder {
+        color: $color;
+    }
+
+    &:-moz-placeholder { /* Firefox 18- */
+        color: $color;  
+    }
+
+    &::-moz-placeholder {  /* Firefox 19+ */
+        color: $color;  
+    }
+
+    &:-ms-input-placeholder {  
+        color: $color;  
+    }
+}
 
 @mixin btn-arrow-hover-left(){
     padding-left: $default-spacing / 2;
@@ -98,4 +98,88 @@
 
 @mixin border-radius($radius...){
     border-radius: $radius;
+}
+
+
+
+// (min) Breakpoints
+@mixin breakpoint($name) {
+    $lg: "(min-width: 1200px)";
+    $ipad-landscape: "(min-width: 1025px)";
+    $md: "(min-width: 1020px)";
+    $sm: "(min-width: 992px)";
+    $xs: "(min-width: 768px)";
+    $xxs: "(min-width: 480px)";
+
+    @if $name == lg {
+        @media #{$lg} {
+            @content;
+        }
+    }
+    @else if $name == ipad-landscape {
+        @media #{$ipad-landscape} {
+            @content;
+        }
+    }
+    @else if $name == md {
+        @media #{$md} {
+            @content;
+        }
+    }
+    @else if $name == sm {
+        @media #{$sm} {
+            @content;
+        }
+    }
+    @else if $name == xs {
+        @media #{$xs} {
+            @content;
+        }
+    }
+    @else if $name == xxs {
+        @media #{$xxs} {
+            @content;
+        }
+    }
+}
+
+// (max) Breakpoints
+@mixin breakpoint-max($name) {
+    $lg: "(max-width: 1199px)";
+    $ipad-landscape: "(max-width: 1024px)";
+    $md: "(max-width: 1019px)";
+    $sm: "(max-width: 991px)";
+    $xs: "(max-width: 767px)";
+    $xxs: "(max-width: 479px)";
+
+    @if $name == lg {
+        @media #{$lg} {
+            @content;
+        }
+    }
+    @else if $name == ipad-landscape {
+        @media #{$ipad-landscape} {
+            @content;
+        }
+    }
+    @else if $name == md {
+        @media #{$md} {
+            @content;
+        }
+    }
+    @else if $name == sm {
+        @media #{$sm} {
+            @content;
+        }
+    }
+    @else if $name == xs {
+        @media #{$xs} {
+            @content;
+        }
+    }
+    @else if $name == xxs {
+        @media #{$xxs} {
+            @content;
+        }
+    }
 }

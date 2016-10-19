@@ -2,10 +2,14 @@
     'use strict';
 
     angular.module('app', ['ionic', 'ngAnimate'])
+        .constant("settings", {
+            "domain": "http://0e1b3df6.ngrok.io" //ex. 6b050561.ngrok.io // http://spots.local
+        })
         .run(function ($ionicPlatform, $ionicConfig) {
             $ionicPlatform.ready(function () {
 
                 $ionicConfig.views.transition('none');
+                $ionicConfig.backButton.text('Tilbage');
 
                 var ismobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
 
@@ -14,7 +18,7 @@
                 }
 
                 if (cordova.platformId === 'ios' && window.cordova && window.cordova.plugins.Keyboard) {
-                    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+                    //Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
                     // for form inputs)
                     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 
@@ -40,6 +44,10 @@
                 .state('map', {
                     url: '/map',
                     templateUrl: 'templates/map.html'
+                })
+                .state('about', {
+                    url: '/about',
+                    templateUrl: 'templates/about.html'
                 })
                 .state('spot', {
                     url: '/spot/:spotId',

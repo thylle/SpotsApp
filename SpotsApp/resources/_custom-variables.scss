@@ -3,6 +3,7 @@
 //Z-index
 $z-index-list-item:                 3;
 $z-index-list-item-active:          4;
+$z-index-message:                   4;
 $z-index-header:                    5;
 $z-index-loading:                   9999;
 
@@ -10,7 +11,7 @@ $z-index-loading:                   9999;
 //Custom
 $default-spacing:                   30px !default;
 $header-height:                     44px !default;
-$filter-height:                     55px !default;
+$filter-height:                     90px !default;
 $loading-size:                      50px !default;
 
 
@@ -29,6 +30,8 @@ $gray-light:                        #efefef !default;
 $gray-lighter:                      #f5f5f5 !default;
 
 $brand-primary:                     #00ACC1 !default; //Material 600
+$brand-primary-light:               #00BCD4 !default; //Material 500
+$brand-primary-lighter:             #26C6DA !default; //Material 400
 $brand-primary-dark:                #0097A7 !default; //Material 700
 $brand-primary-darker:              #00838F !default; //Material 800
 
@@ -89,7 +92,7 @@ $grid-padding-width:                0 !default;
 $tabs-height:                       55px !default;
 
 // Import Montserrat Webfont
-@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+//@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
 
 
 
