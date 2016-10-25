@@ -1,0 +1,2 @@
+# SpotsApp
+App for spots
