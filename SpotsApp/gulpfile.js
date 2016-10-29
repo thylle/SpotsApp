@@ -25,8 +25,16 @@ gulp.task("browserSync", function () {
 // TARGETS
 var src = {
     bundled: "www/bundled",
-    styles: "resources/**/*.scss",
-    scripts: "resources/**/*.js",
+    styles: [
+        "resources/*.scss",
+        "resources/base/*.scss",
+        "resources/modules/*.scss"
+    ],
+    scripts: [
+        "resources/angular-app/**/*.js",
+        "resources/base/**/*.js",
+        "resources/modules/**/*.js"
+    ],
     thirdparty: "resources/3rd-party/**/*.js",
     views: "www/**/*.html"
 };
