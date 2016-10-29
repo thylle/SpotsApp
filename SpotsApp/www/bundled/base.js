@@ -11,6 +11,7 @@
         $scope.domain = settings.domain;
         $scope.isLoading = true;
         $scope.pageFailed = false;
+        $scope.ignoreMessages = false;
         $scope.mapCreated = false;
         $scope.overviewActive = false;
         $scope.spots = [];
@@ -61,9 +62,15 @@
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
 
             //state animations and hiding elements in different states
-            stateChange(toState);
+            stateChangeAnimation(toState);
 
-            console.log("toParams", toParams.spotId);
+
+            //Ignore messages (loading and error text)
+            if (toState.name == "about") {
+                $scope.ignoreMessages = true;
+            } else {
+                $scope.ignoreMessages = false;
+            }
 
 
             //Empty currentSpot if the view is not where the spot is shown

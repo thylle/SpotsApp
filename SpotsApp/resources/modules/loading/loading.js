@@ -1,5 +1,4 @@
 ﻿
-
 var loadingContainer = $(".message__container");
 var loadingContent = $(loadingContainer).find(".message__spinner");
 var loadingElementClone = "";

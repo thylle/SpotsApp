@@ -46,7 +46,7 @@
 
         <ion-nav-view></ion-nav-view>
 
-        <div class="message__container" data-ng-class="{'active' : pageFailed || isLoading}">
+        <div class="message__container" data-ng-class="{'active' : (pageFailed || isLoading) && !ignoreMessages}">
             <div class="message__content" data-ng-if="isLoading">
                 <div class="message__spinner">
                     <img src="svg/loading.svg" class="message__img" />

@@ -1,8 +1,10 @@
 ﻿
 
-function stateChange(toState) {
+function stateChangeAnimation(toState) {
 
     var toStateName = toState.name;
+
+    console.log("toStateName", toStateName);
 
     var tabHideClass = "tab-nav--hide";
     var headerFilterHideClass = "header-filter--hide";
@@ -14,7 +16,6 @@ function stateChange(toState) {
         $("body").removeClass("state--change");
     }, 200);
 
-    
     //Choose state names which should show the bottom tabs bar
     //List only
     if (toStateName == "list") {

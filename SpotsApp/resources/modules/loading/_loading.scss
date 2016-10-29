@@ -1,8 +1,6 @@
 @import "../../_custom-mixins.scss";
 @import "../../_custom-variables.scss";
 
-
-
 .message{
     &__container{
         @include transition(opacity linear 0.3s);
