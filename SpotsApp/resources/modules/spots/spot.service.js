@@ -11,6 +11,7 @@
         this.getAllSpots = getAllSpots;
         this.getSpotById = getSpotById;
         this.checkInOnSpot = checkInOnSpot;
+        this.checkOutOnSpot = checkOutOnSpot;
 
         var domainUrl = settings.domain;
 
@@ -30,6 +31,13 @@
 
         function checkInOnSpot(id) {
             var apiUrl = "/Umbraco/Api/Spots/CheckIn?spotId=" + id;
+            var url = domainUrl + apiUrl;
+
+            return $http.post(url);
+        }
+
+        function checkOutOnSpot(id) {
+            var apiUrl = "/Umbraco/Api/Spots/CheckOut?spotId=" + id;
             var url = domainUrl + apiUrl;
 
             return $http.post(url);

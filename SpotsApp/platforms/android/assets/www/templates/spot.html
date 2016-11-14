@@ -27,15 +27,15 @@
                     <div class="compare-overview__container">
                         <div class="compare-overview__item">
                             <span class="icon icon ion-speedometer"></span>
-                            <span>5 m/s</span>
+                            <span>{{currentSpot.Weather.WindSpeed}} m/s</span>
                         </div>
                         <div class="compare-overview__item">
-                            <span class="icon icon ion-navigate"></span>
-                            <span>SV</span>
+                            <span class="icon icon ion-navigate rotate-icon" ng-style="{'transform': 'rotate('+ currentSpotWindDegCorrected +'deg)'}"></span>
+                            <span>{{currentSpot.Weather.WindDirection}}</span>
                         </div>
                         <div class="compare-overview__item">
-                            <span class="icon icon ion-stats-bars"></span>
-                            <span>1m</span>
+                            <span class="icon {{currentSpot.Weather.WeatherIcon}}"></span>
+                            <span>{{currentSpot.Weather.Degrees}}°</span>
                         </div>
                     </div>
                 </div>
@@ -49,57 +49,47 @@
                     </div>
 
                     <div class="compare__item">
-                        <div class="compare__col">5 m/s</div>
+                        <div class="compare__col">{{currentSpot.Weather.WindSpeed}} m/s</div>
                         <div class="compare__col compare__col--icon">
                             <span class="icon ion-speedometer"></span>
                         </div>
-                        <div class="compare__col">8 m/s</div>
+                        <div class="compare__col">{{currentSpot.OptimalWindSpeed}} m/s</div>
                     </div>
 
                     <div class="compare__item">
-                        <div class="compare__col">SV</div>
+                        <div class="compare__col">{{currentSpot.Weather.WindDirection}}</div>
                         <div class="compare__col compare__col--icon">
-                            <span class="icon ion-navigate"></span>
+                            <span class="icon ion-navigate" ng-style="{'transform': 'rotate('+ currentSpotWindDegCorrected +'deg)'}"></span>
                         </div>
-                        <div class="compare__col">VNV</div>
+                        <div class="compare__col">{{currentSpot.OptimalWindDirection}}</div>
                     </div>
 
                     <div class="compare__item">
-                        <div class="compare__col">1m</div>
+                        <div class="compare__col">{{currentSpot.Weather.Degrees}}°</div>
                         <div class="compare__col compare__col--icon">
-                            <span class="icon ion-stats-bars"></span>
+                            <span class="icon {{currentSpot.Weather.WeatherIcon}}"></span>
                         </div>
-                        <div class="compare__col">0.5m</div>
+                        <div class="compare__col">8°</div>
                     </div>
                 </div>
 
-
-                <div class="item-content article-content">
-
-                    <!-- <a data-ui-sref="app.category({categoryId: itemCtrl.category.id})">{{itemCtrl.category.title}}</a> -->
-                </div>
-
-                <!--<div class="row  col-spacing-sides  default-margin-bottom-half  center-align">
-                    <div class="col">
-                        <button data-ng-click="checkIn()"><i class="icon ion-checkmark-round"></i> JEG SURFER HER {{currentSpot.CheckIns}}</button>
-                        <br />
-                    </div>
-                </div>-->
-
-                <div class="default-margin-bottom-half clearfix">
+                <!--Check In Button-->
+                <div class="default-margin-top default-margin-bottom-half clearfix">
                     <div class="check-in">
                         <div class="check-in__col">
                             <div class="check-in__count-container">
                                 <span class="check-in__count">
                                     {{currentSpot.CheckIns}}
-                                    <span class="check-in__label">Surfer her</span>
+                                    <span class="check-in__label">Surfer her i dag</span>
                                 </span>
-                                <button class="btn btn-primary check-in__button" data-ng-click="checkIn()" data-ng-class="{'active' : userCheckedIn}">Jeg surfer her</button>
+                                <button class="btn btn-primary check-in__button" data-ng-click="toggleCheckIn()" data-ng-if="!userCheckedIn">Jeg surfer her</button>
+                                <button class="btn btn-primary check-in__button active" data-ng-click="toggleCheckIn()" data-ng-if="userCheckedIn">Fortryd <span aria-hidden="true" class="icon ion-android-close"></span></button>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!--Description-->
                 <div class="row  col-spacing-sides">
                     <div class="col">
                         <pre class="item-description  fade-on-state-change">{{currentSpot.Description}}</pre>
@@ -110,14 +100,14 @@
 
                 <div class="row">
                     <div class="col col-50  devider--right">
-                        <a href="http://ifm.fcoo.dk/denmark/#zoom=7&lat=55.7&lon=11.1&locate=false&follow=false&level=0&layer=FCOO%20Standard&overlays=Short%20range%20forecasts.windspeed%252CShort%20range%20forecasts.winddirection%252CSafety.MSI%252CSafety.Firing%20warnings" target="_blank" class="item-next">
+                        <a href="#" ng-click="openLinkInBrowser(http://ifm.fcoo.dk/denmark/#zoom=7&lat=55.7&lon=11.1&locate=false&follow=false&level=0&layer=FCOO%20Standard&overlays=Short%20range%20forecasts.windspeed%252CShort%20range%20forecasts.winddirection%252CSafety.MSI%252CSafety.Firing%20warnings)" class="item-next">
                             <h4 class="next-story">fcoo.dk</h4>
                             <h2>Vejrudsigt</h2>
                             <i class="icon ion-ios-cloud item-next-icon"></i>
                         </a>
                     </div>
                     <div class="col col-50">
-                        <a href="http://maps.google.com/?q={{currentSpot.Latitude}},{{currentSpot.Longitude}}" target="_blank" class="item-next">
+                        <a href="#" ng-click="openLinkInBrowser(currentSpotMapsLink)" class="item-next">
                             <h4 class="next-story">Google Maps</h4>
                             <h2>Find vej</h2>
                             <i class="icon ion-location item-next-icon"></i>

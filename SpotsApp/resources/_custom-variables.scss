@@ -20,8 +20,9 @@ $loading-size:                      50px !default;
 
 $white:                             #fff !default;
 $black:                             #181818 !default;
-$brand-error:                       #b96666 !default;
-$green:                             #a1c469;
+$green:                             #66BB6A; //Material 400
+$brand-error:                       #ef5350 !default; //Material 400
+$brand-success:                     $green !default;
 
 $gray-darker:                       #333 !default;
 $gray-dark:                         #a1a1a1 !default;

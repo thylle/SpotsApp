@@ -11,31 +11,40 @@ function closeAllInfoWindows() {
 function setMarkers(map, scope) {
 
     for (var i = 0; i < scope.spots.length; i++) {
-        var name = scope.spots[i].Name;
+        var spot = scope.spots[i];
+        var spotId = spot.Id;
+        var spotName = spot.Name;
         var lat = scope.spots[i].Latitude;
         var long = scope.spots[i].Longitude;
-        var markerIcon = "http://labs.google.com/ridefinder/images/mm_20_blue.png";
+        var markerIcon = "img/icon-marker.png";
 
         //If element don't have lat and long, we stop adding the marker
         if (lat != "" && long != "") {
-            if (scope.spots[i].Category == "Kite") {
-                markerIcon = "http://labs.google.com/ridefinder/images/mm_20_orange.png";
+            if (spot.Category == "Kite") {
+                markerIcon = "img/icon-marker-kite.png";
+            }
+            if (spot.Category == "Cable") {
+                markerIcon = "img/icon-marker-wake.png";
             }
 
             var position = new google.maps.LatLng(lat, long);
 
             var marker = new google.maps.Marker({
                 map: map,
-                title: name,
+                title: spotName,
                 position: position,
                 icon: markerIcon
             });
 
-
             var infowindow = new google.maps.InfoWindow();
             infoWindows.push(infowindow);
 
-            var content = "<h5>" + name + "</h5>";
+            var content = '<h4 style="min-width: 110px;">' + spotName + '</h4>'
+                    + '<div class="clearfix">'
+                        + '<p style="margin: 0;">' + '<i class="icon ion-android-car"></i>' + spot.DrivingDistance + '</p>'
+                        + '<p>' + '<i class="icon ion-android-time"></i>' + spot.DrivingDuration + '</p>'
+                    + '</div>'
+                    + '<p><a href="#/spot/' + spotId + '" class="button button-outline button-positive">Se spottet</a></p>';
 
             google.maps.event.addListener(marker, 'click', (function (marker, content, infowindow) {
                 return function () {
@@ -57,7 +66,7 @@ function createGoogleMaps(scope, currentLocation) {
 
     var mapOptions = {
         center: locationHorsens,
-        zoom: 6,
+        zoom: 7,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
@@ -69,11 +78,7 @@ function createGoogleMaps(scope, currentLocation) {
         position: currentLocation,
         map: map,
         title: "My Location",
-        icon: {
-            path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-            scale: 4,
-            fillColor: "#f8ae5f"
-        }
+        icon: "img/icon-marker.png"
     });
 
     setMarkers(map, scope);

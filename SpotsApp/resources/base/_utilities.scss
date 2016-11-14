@@ -16,18 +16,6 @@
     }
 }
 
-.default-margin{
-
-    &-bottom{
-        margin-bottom: $default-spacing;
-
-        &-half{
-            margin-bottom: $default-spacing / 2;
-        }
-    }
-}
-
-
 .bg-primary{
     background-color: $brand-primary;
 }
@@ -49,54 +37,27 @@
     text-decoration: none;
 }
 
+.pull-left{
+    float: left;
+}
+.pull-right{
+    float: right;
+}
 
-.check-in{
-    $check-in-size: 50px;
-    padding-bottom: $default-spacing/2;
-    border-bottom: 1px solid $gray;
+.default-margin{
+    &-top{
+        margin-top: $default-spacing;
 
-    &__col{
-        @include clearfix;
-        width: 100%;
-        text-align: center;
+        &-half{
+            margin-top: $default-spacing / 2;
+        }
     }
 
-    &__count-container{
-        display: inline-block;
-    }
+    &-bottom{
+        margin-bottom: $default-spacing;
 
-    &__count{
-        display: block;
-        float: left;
-        padding: 0 $default-spacing/2 0 0;
-        font-size: $check-in-size;
-        line-height: 1em;
-        color: $brand-primary;
-    }
-
-    &__label{
-        display: block;
-        font-size: $font-size-small;
-        line-height: 1.3em;
-        text-transform: uppercase;
-        color: $gray-dark;
-    }
-
-    &__button{
-        margin-left: $default-spacing/2;
-        padding: $default-spacing/1.7 $default-spacing/3;
-        color: $brand-primary;
-        text-transform: uppercase;
-        border: 1px solid $brand-primary;
-        white-space: normal;
-        background: transparent;
-
-        &:active,
-        &:focus,
-        &.active{
-            color: $white;
-            background: $brand-primary;
+        &-half{
+            margin-bottom: $default-spacing / 2;
         }
     }
 }
-

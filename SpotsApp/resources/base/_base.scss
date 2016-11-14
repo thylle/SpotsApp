@@ -56,33 +56,3 @@ body {
     }
 }
 
-
-//Overrides ----------------------------- //
-.tabs{
-    border: 0 !important;
-    padding: $default-spacing / 10 0;
-
-    &-striped.tabs-positive .tab-item{
-        color: $white;
-
-        &-active,
-        &.activated{
-            margin: 0 !important;
-            border: 0 !important;
-        }
-    }
-
-    .tab-item{
-        &.tab-item-active .tab-title, 
-        &.active .tab-title, 
-        &.activated .tab-title{
-            padding: 2px;
-            border: 0;
-            border-radius: 0;
-            border-bottom: 1px solid $light;
-        }
-    }
-
-}
-
-

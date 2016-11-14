@@ -1,31 +1,47 @@
 
+var checkIn = {
 
-var loadingContainer = $(".message__container");
-var loadingContent = $(loadingContainer).find(".message__spinner");
-var loadingElementClone = "";
-var loadingActiveClass = "message__container--active";
+    //Let users check-in and out on the current spot
+    toggle: function($scope, $window, spotsService, settings) {
+        if ($scope.currentSpot != null) {
 
-function showLoading(scope) {
-    scope.isLoading = true;
-    //loadingContainer.addClass(loadingActiveClass);
+            //Check In
+            if ($scope.userCheckedIn === false) {
+                $scope.userCheckedIn = true;
+                $window.localStorage['userCheckedIn'] = true;
+                $scope.currentSpot.CheckIns = "...";
 
-    //$(loadingContent).append(loadingElementClone);
-}
+                spotsService.checkInOnSpot($scope.currentSpot.Id).success(function(response) {
+                    console.log("check-in success", response);
 
-function hideLoading(scope) {
+                    spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings);
+                })
+                .error(function() {
+                    alert("*** ERROR *** Check-In");
 
-    setTimeout(function () {
-        scope.isLoading = false;
+                    $scope.userCheckedIn = false;
+                });
+            }
 
-        //loadingContainer.removeClass(loadingActiveClass);
+            //Check Out
+            else {
+                $scope.userCheckedIn = false;
+                $window.localStorage['userCheckedIn'] = false;
+                $scope.currentSpot.CheckIns = "...";
 
-        //loadingElementClone = $(loadingContent).find("img").clone();
+                spotsService.checkOutOnSpot($scope.currentSpot.Id).success(function (response) {
+                    console.log("check-out success", response);
 
-        //remove the loading image from the DOM, to reduce CPU usage because of the animation
-        //setTimeout(function () {
-        //    $(loadingContent).find("img").remove();
-        //}, 1500);
-    }, 800);
+                    spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings);
+                })
+                .error(function () {
+                    alert("*** ERROR *** Check-In");
+
+                    $scope.userCheckedIn = true;
+                });
+            }
+        }    
+    }
 }
 
 
@@ -42,31 +58,40 @@ function closeAllInfoWindows() {
 function setMarkers(map, scope) {
 
     for (var i = 0; i < scope.spots.length; i++) {
-        var name = scope.spots[i].Name;
+        var spot = scope.spots[i];
+        var spotId = spot.Id;
+        var spotName = spot.Name;
         var lat = scope.spots[i].Latitude;
         var long = scope.spots[i].Longitude;
-        var markerIcon = "http://labs.google.com/ridefinder/images/mm_20_blue.png";
+        var markerIcon = "img/icon-marker.png";
 
         //If element don't have lat and long, we stop adding the marker
         if (lat != "" && long != "") {
-            if (scope.spots[i].Category == "Kite") {
-                markerIcon = "http://labs.google.com/ridefinder/images/mm_20_orange.png";
+            if (spot.Category == "Kite") {
+                markerIcon = "img/icon-marker-kite.png";
+            }
+            if (spot.Category == "Cable") {
+                markerIcon = "img/icon-marker-wake.png";
             }
 
             var position = new google.maps.LatLng(lat, long);
 
             var marker = new google.maps.Marker({
                 map: map,
-                title: name,
+                title: spotName,
                 position: position,
                 icon: markerIcon
             });
 
-
             var infowindow = new google.maps.InfoWindow();
             infoWindows.push(infowindow);
 
-            var content = "<h5>" + name + "</h5>";
+            var content = '<h4 style="min-width: 110px;">' + spotName + '</h4>'
+                    + '<div class="clearfix">'
+                        + '<p style="margin: 0;">' + '<i class="icon ion-android-car"></i>' + spot.DrivingDistance + '</p>'
+                        + '<p>' + '<i class="icon ion-android-time"></i>' + spot.DrivingDuration + '</p>'
+                    + '</div>'
+                    + '<p><a href="#/spot/' + spotId + '" class="button button-outline button-positive">Se spottet</a></p>';
 
             google.maps.event.addListener(marker, 'click', (function (marker, content, infowindow) {
                 return function () {
@@ -88,7 +113,7 @@ function createGoogleMaps(scope, currentLocation) {
 
     var mapOptions = {
         center: locationHorsens,
-        zoom: 6,
+        zoom: 7,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
@@ -100,11 +125,7 @@ function createGoogleMaps(scope, currentLocation) {
         position: currentLocation,
         map: map,
         title: "My Location",
-        icon: {
-            path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-            scale: 4,
-            fillColor: "#f8ae5f"
-        }
+        icon: "img/icon-marker.png"
     });
 
     setMarkers(map, scope);
@@ -112,11 +133,59 @@ function createGoogleMaps(scope, currentLocation) {
     scope.map = map;
 }
 
+function stateChange($scope, toState, toParams, distanceService, spotsService, settings) {
 
-function stateChange(toState) {
+    console.log("toStateName", toState.name);
+
+    stateChangeAnimation($scope, toState);
+    ignoreMessagesOnStateChange($scope, toState);
+    emptyCurrentSpot($scope, toState, toParams, spotsService, settings);
+    loadMapDelayed($scope, toState, distanceService);
+}
+
+
+//Ignore messages (loading and error text)
+function ignoreMessagesOnStateChange($scope, toState) {
+    if (toState.name == "about") {
+        $scope.ignoreMessages = true;
+    } else {
+        $scope.ignoreMessages = false;
+    }
+}
+
+//Timeout to add data to spots and make view ready
+function loadMapDelayed($scope, toState, distanceService) {
+
+    if (toState.name == "map") {
+        setTimeout(function () {
+            //Check if map is already loaded - if not, load it
+            var $mapContainer = $("#map");
+
+            if ($mapContainer.length <= 0) {
+                $scope.mapCreated = false;
+            }
+            if (!$scope.mapCreated && $mapContainer.length > 0) {
+                createGoogleMaps($scope, distanceService.getCurrentPosition());
+                $scope.mapCreated = true;
+            }
+        }, 1000);
+    }
+}
+
+//Empty currentSpot if the view is not where the spot is shown
+function emptyCurrentSpot($scope, toState, toParms, spotsService, settings) {
+    if (toState.name != "spot") {
+        $scope.currentSpot = null;
+        $scope.currentSpotImage = null;
+    } else {
+        spots.getCurrentSpot($scope, spotsService, toParms.spotId, settings);
+    }
+}
+
+//Animate hide/show header and footer bars, based on view
+function stateChangeAnimation($scope, toState) {
 
     var toStateName = toState.name;
-
     var tabHideClass = "tab-nav--hide";
     var headerFilterHideClass = "header-filter--hide";
 
@@ -128,8 +197,7 @@ function stateChange(toState) {
     }, 200);
 
     
-    //Choose state names which should show the bottom tabs bar
-    //List only
+    //Hide "header filter" on every page except selected view
     if (toStateName == "list") {
         $("body")
             .removeClass(headerFilterHideClass);
@@ -138,14 +206,12 @@ function stateChange(toState) {
             .addClass(headerFilterHideClass);
     }
 
-
-    //List & Map
-    if (toStateName == "list" || toStateName == "map") {
-        $("body")
-            .removeClass(tabHideClass);
+    //Hide tabs on selected pages
+    if (toStateName == "nameOfViwe") {
+        $("body").addClass(tabHideClass);
+        
     } else {
-        $("body")
-            .addClass(tabHideClass);
+        $("body").removeClass(tabHideClass);
     }
 }
             
@@ -165,6 +231,7 @@ function stateChange(toState) {
         this.getAllSpots = getAllSpots;
         this.getSpotById = getSpotById;
         this.checkInOnSpot = checkInOnSpot;
+        this.checkOutOnSpot = checkOutOnSpot;
 
         var domainUrl = settings.domain;
 
@@ -188,10 +255,15 @@ function stateChange(toState) {
 
             return $http.post(url);
         }
+
+        function checkOutOnSpot(id) {
+            var apiUrl = "/Umbraco/Api/Spots/CheckOut?spotId=" + id;
+            var url = domainUrl + apiUrl;
+
+            return $http.post(url);
+        }
     }
 })();
-
-
 
     var spots = {
         init: function () {
@@ -222,7 +294,13 @@ function stateChange(toState) {
 
                 $scope.currentSpot = response;
                 $scope.currentSpotImage = settings.domain + $scope.currentSpot.Image + "?width=400&height=200&mode=crop&format=jpg";
-            })
+                $scope.currentSpotMapsLink = "http://maps.google.com/?q=" + $scope.currentSpot.Latitude + "," + $scope.currentSpot.Longitude;
+                // "-45" is to make the arrow point to north = 0deg, 
+                // Then we add the current degrees and add 180 to flip it arround
+                // This is so that the arrow points in the wind direction instead of against the direction
+                $scope.currentSpotWindDegCorrected = (-45 + $scope.currentSpot.Weather.WindDirectionDeg) + 180;
+                    
+                })
             .error(function () {
                 alert("*** ERROR *** Current Spot");
                 $scope.pageFailed = true;
@@ -280,31 +358,41 @@ function stateChange(toState) {
 
             //Hide loading
             $scope.isLoading = false;
-        },
-
-        //Let users check-in on the current spot
-        checkIn: function ($scope, spotsService, settings) {
-            if ($scope.currentSpot != null) {
-                $scope.userCheckedIn = true;
-
-                spotsService.checkInOnSpot($scope.currentSpot.Id).success(function (response) {
-                    console.log("check-in success", response);
-                    
-                    spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings);
-                })
-                .error(function () {
-                    alert("*** ERROR *** Check-In");
-
-                    $scope.userCheckedIn = false;
-                    $scope.pageFailed = true;
-                    $scope.isLoading = false;
-                });
-            }
-        },
+        }
     }
 
 
 
 
 
+
+
+
+var loadingContainer = $(".message__container");
+var loadingContent = $(loadingContainer).find(".message__spinner");
+var loadingElementClone = "";
+var loadingActiveClass = "message__container--active";
+
+function showLoading(scope) {
+    scope.isLoading = true;
+    //loadingContainer.addClass(loadingActiveClass);
+
+    //$(loadingContent).append(loadingElementClone);
+}
+
+function hideLoading(scope) {
+
+    setTimeout(function () {
+        scope.isLoading = false;
+
+        //loadingContainer.removeClass(loadingActiveClass);
+
+        //loadingElementClone = $(loadingContent).find("img").clone();
+
+        //remove the loading image from the DOM, to reduce CPU usage because of the animation
+        //setTimeout(function () {
+        //    $(loadingContent).find("img").remove();
+        //}, 1500);
+    }, 800);
+}
 

@@ -1,6 +1,34 @@
 @import "../../_custom-mixins.scss";
 @import "../../_custom-variables.scss";
 
+
+.tabs{
+    border: 0 !important;
+    padding: 4px 0 3px;
+
+    &-striped.tabs-positive .tab-item{
+        color: $white;
+
+        &-active,
+        &.activated{
+            margin: 0 !important;
+            border: 0 !important;
+        }
+    }
+
+    .tab-item{
+        &.tab-item-active .tab-title, 
+        &.active .tab-title, 
+        &.activated .tab-title{
+            padding: 2px;
+            border: 0;
+            border-radius: 0;
+            border-bottom: 1px solid $light;
+        }
+    }
+
+}
+
 .tab-nav{
     @include transition(transform ease 0.3s);
     transform: translate3d(0, 0, 0);

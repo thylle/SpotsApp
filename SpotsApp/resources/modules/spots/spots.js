@@ -1,6 +1,4 @@
 ﻿
-
-
     var spots = {
         init: function () {
 
@@ -30,7 +28,13 @@
 
                 $scope.currentSpot = response;
                 $scope.currentSpotImage = settings.domain + $scope.currentSpot.Image + "?width=400&height=200&mode=crop&format=jpg";
-            })
+                $scope.currentSpotMapsLink = "http://maps.google.com/?q=" + $scope.currentSpot.Latitude + "," + $scope.currentSpot.Longitude;
+                // "-45" is to make the arrow point to north = 0deg, 
+                // Then we add the current degrees and add 180 to flip it arround
+                // This is so that the arrow points in the wind direction instead of against the direction
+                $scope.currentSpotWindDegCorrected = (-45 + $scope.currentSpot.Weather.WindDirectionDeg) + 180;
+                    
+                })
             .error(function () {
                 alert("*** ERROR *** Current Spot");
                 $scope.pageFailed = true;
@@ -88,27 +92,7 @@
 
             //Hide loading
             $scope.isLoading = false;
-        },
-
-        //Let users check-in on the current spot
-        checkIn: function ($scope, spotsService, settings) {
-            if ($scope.currentSpot != null) {
-                $scope.userCheckedIn = true;
-
-                spotsService.checkInOnSpot($scope.currentSpot.Id).success(function (response) {
-                    console.log("check-in success", response);
-                    
-                    spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings);
-                })
-                .error(function () {
-                    alert("*** ERROR *** Check-In");
-
-                    $scope.userCheckedIn = false;
-                    $scope.pageFailed = true;
-                    $scope.isLoading = false;
-                });
-            }
-        },
+        }
     }
 
 
