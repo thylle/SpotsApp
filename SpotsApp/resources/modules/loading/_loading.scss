@@ -17,6 +17,7 @@
 
         &.active{
             opacity: 1;
+            @include transition(opacity linear 0s);
         }
     }
 
@@ -47,6 +48,13 @@
         height:  $loading-size;
         margin-top: -($loading-size / 2);
         margin-left: -($loading-size / 2);
+    }
+
+    &__spinner-text{
+        position: absolute;
+        width: 100%;
+        padding-top: $default-spacing*2;
+        text-align: center;
     }
 
     &__img{

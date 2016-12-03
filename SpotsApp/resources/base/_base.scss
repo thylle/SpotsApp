@@ -4,6 +4,10 @@
 body {
 }
 
+[data-ui-sref]{
+    cursor: pointer;
+}
+
 .scroll {
     height: 100%;
 }

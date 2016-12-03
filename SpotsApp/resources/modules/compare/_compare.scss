@@ -7,6 +7,12 @@
     color: $white;
     background: $brand-primary;
 
+    &--no-data{
+        &:after{
+            content: none !important;
+        }
+    }
+
     &:after{
         content: "";
         position: absolute;
