@@ -40,7 +40,6 @@
             var googleDistanceUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&language=da";
             var originsUrl = "&origins=" + currentLatitude + "," + currentLongitude;
             var destinationsUrl = "&destinations=" + spotLatitude + "," + spotLongitude;
-
             var finalDistanceUrl = googleDistanceUrl + originsUrl + destinationsUrl + googleApiKey;
 
             return $http.get(finalDistanceUrl);
@@ -50,14 +49,18 @@
 
             if (spot.Latitude != "" && spot.Longitude != "" && currentPosition != null) {
 
+                //Set distance from current position
                 spot.Distance = getDistanceFromCurrentPosition(currentPosition, spot.Latitude, spot.Longitude);
 
+                //Get precise driving distance and duration from Google
                 getDistanceInfo(currentLatitude, currentLongitude, spot.Latitude, spot.Longitude).then(function (response) {
-                    var drivingDistanceText = response.data.rows[0].elements[0].distance.text;
-                    var drivingDurationText = response.data.rows[0].elements[0].duration.text;
 
-                    spot.DrivingDistance = drivingDistanceText;
-                    spot.DrivingDuration = drivingDurationText;
+                    var elements = response.data.rows[0].elements[0];
+
+                    if (elements.status != "ZERO_RESULTS") {
+                        spot.DrivingDistance = elements.distance.text;
+                        spot.DrivingDuration = elements.duration.text;
+                    }
                 });
             }
         }
