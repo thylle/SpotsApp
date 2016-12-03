@@ -107,8 +107,6 @@ function setMarkers(map, scope) {
 
 function createGoogleMaps(scope, currentLocation) {
 
-    console.log("creating map");
-
     var locationHorsens = new google.maps.LatLng(55.861175, 9.845964);
 
     var mapOptions = {
@@ -133,6 +131,36 @@ function createGoogleMaps(scope, currentLocation) {
     scope.map = map;
 }
 
+
+//Timeout to make sure Google and data is ready and to show the loading "spinner"
+function loadMapDelayed($scope, toState, distanceService) {
+
+    if (toState.name == "map" && !$scope.pageFailed) {
+        $scope.mapActive = true;
+
+        //Check if map is already loaded - if not, load it
+        if (!$scope.mapCreated) {
+            $scope.isLoading = true;
+            $scope.loadingMessage = "Henter kort";
+
+            setTimeout(function () {
+                createGoogleMaps($scope, distanceService.getCurrentPosition());
+            }, 1000);
+
+            setTimeout(function () {
+                $scope.isLoading = false;
+                $scope.loadingMessage = "";
+                $scope.mapCreated = true;
+                $scope.$apply();
+                console.log("map created");
+            }, 2000);
+        }
+    }
+    else {
+        $scope.mapActive = false;
+    }
+}
+
 function stateChange($scope, toState, toParams, distanceService, spotsService, settings) {
 
     console.log("toStateName", toState.name);
@@ -140,35 +168,24 @@ function stateChange($scope, toState, toParams, distanceService, spotsService, s
     stateChangeAnimation($scope, toState);
     ignoreMessagesOnStateChange($scope, toState);
     emptyCurrentSpot($scope, toState, toParams, spotsService, settings);
+    stateChangeLoading($scope, toState);
     loadMapDelayed($scope, toState, distanceService);
 }
 
 
-//Ignore messages (loading and error text)
-function ignoreMessagesOnStateChange($scope, toState) {
-    if (toState.name == "about") {
-        $scope.ignoreMessages = true;
-    } else {
-        $scope.ignoreMessages = false;
+function stateChangeLoading($scope, toState) {
+    if (toState.name == "spot") {
+        $scope.isLoading = true;
+        $scope.loadingMessage = "Henter detaljer";
     }
 }
 
-//Timeout to add data to spots and make view ready
-function loadMapDelayed($scope, toState, distanceService) {
-
-    if (toState.name == "map") {
-        setTimeout(function () {
-            //Check if map is already loaded - if not, load it
-            var $mapContainer = $("#map");
-
-            if ($mapContainer.length <= 0) {
-                $scope.mapCreated = false;
-            }
-            if (!$scope.mapCreated && $mapContainer.length > 0) {
-                createGoogleMaps($scope, distanceService.getCurrentPosition());
-                $scope.mapCreated = true;
-            }
-        }, 1000);
+//Ignore messages (loading and error text)
+function ignoreMessagesOnStateChange($scope, toState) {
+    if (toState.name == "info") {
+        $scope.ignoreMessages = true;
+    } else {
+        $scope.ignoreMessages = false;
     }
 }
 
@@ -274,7 +291,7 @@ function stateChangeAnimation($scope, toState) {
         getAllSpots: function ($scope, $timeout, spotsService, distanceService) {
             spotsService.getAllSpots().success(function (response) {
                 $scope.spots = response;
-
+                $scope.loadingMessage = "";
                 console.log("success", response);
 
                 //Get current position + a number to count attempts
@@ -284,6 +301,7 @@ function stateChangeAnimation($scope, toState) {
                 alert("*** ERROR *** All Spots");
                 $scope.pageFailed = true;
                 $scope.isLoading = false;
+                $scope.loadingMessage = "";
             });
         },
 
@@ -298,32 +316,35 @@ function stateChangeAnimation($scope, toState) {
                 // "-45" is to make the arrow point to north = 0deg, 
                 // Then we add the current degrees and add 180 to flip it arround
                 // This is so that the arrow points in the wind direction instead of against the direction
-                $scope.currentSpotWindDegCorrected = (-45 + $scope.currentSpot.Weather.WindDirectionDeg) + 180;
-                    
-                })
-            .error(function () {
+                if ($scope.Weather) {
+                    $scope.currentSpotWindDegCorrected = (-45 + $scope.currentSpot.Weather.WindDirectionDeg) + 180;
+                }
+
+                setTimeout(function() {
+                    $scope.isLoading = false;
+                    $scope.loadingMessage = "";
+                    $scope.$apply();
+                }, 1500);
+
+            }).error(function () {
                 alert("*** ERROR *** Current Spot");
                 $scope.pageFailed = true;
                 $scope.isLoading = false;
+                $scope.loadingMessage = "";
             });
         },
-
-        //setCurrentSpotFromItem: function ($scope, settings, item) {
-        //    $scope.currentSpot = item;
-        //    $scope.currentSpotImage = settings.domain + item.Image + "?width=400&height=200&mode=crop&format=jpg";
-
-        //    console.log("set", $scope.currentSpot);
-        //},
 
         //Get users current position
         getCurrentPosition: function (countAttempts, $scope, distanceService) {
             countAttempts++;
+            $scope.loadingMessage = "Beregner afstande";
 
             console.log("getCurrentPosition CountAttempts", countAttempts);
 
             //If we have tried 5 times, we stop trying and hide the loading screen
             if (countAttempts >= 5) {
                 $scope.isLoading = false;
+                $scope.loadingMessage = "";
                 $scope.$apply();
                 return;
             }
@@ -339,7 +360,6 @@ function stateChangeAnimation($scope, toState) {
             } else {
                 setTimeout(function () {
                     spots.getCurrentPosition(countAttempts, $scope, distanceService);
-                    $scope.isLoading = false;
                 }, 2000);
             }
         },
@@ -358,6 +378,7 @@ function stateChangeAnimation($scope, toState) {
 
             //Hide loading
             $scope.isLoading = false;
+            $scope.loadingMessage = "";
         }
     }
 
@@ -365,34 +386,4 @@ function stateChangeAnimation($scope, toState) {
 
 
 
-
-
-
-var loadingContainer = $(".message__container");
-var loadingContent = $(loadingContainer).find(".message__spinner");
-var loadingElementClone = "";
-var loadingActiveClass = "message__container--active";
-
-function showLoading(scope) {
-    scope.isLoading = true;
-    //loadingContainer.addClass(loadingActiveClass);
-
-    //$(loadingContent).append(loadingElementClone);
-}
-
-function hideLoading(scope) {
-
-    setTimeout(function () {
-        scope.isLoading = false;
-
-        //loadingContainer.removeClass(loadingActiveClass);
-
-        //loadingElementClone = $(loadingContent).find("img").clone();
-
-        //remove the loading image from the DOM, to reduce CPU usage because of the animation
-        //setTimeout(function () {
-        //    $(loadingContent).find("img").remove();
-        //}, 1500);
-    }, 800);
-}
 

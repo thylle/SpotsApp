@@ -13,6 +13,7 @@
         $scope.pageFailed = false;
         $scope.ignoreMessages = false;
         $scope.mapCreated = false;
+        $scope.mapActive = false;
         $scope.overviewActive = false;
         $scope.spots = [];
         $scope.currentSpot = null;
@@ -35,8 +36,6 @@
             }
         ];
         
-
-
         //Category filter in the header
         $scope.filterByCategory = function (item) {
             $scope.categoryFilter = item.Filter;

@@ -10217,6 +10217,9 @@ $font-size-h3:                      26px !default;
 $font-size-h4:                      22px !default;
 $font-size-h5:                      18px !default;
 $font-size-h6:                      16px !default;*/
+[data-ui-sref] {
+  cursor: pointer; }
+
 .scroll {
   height: 100%; }
 
@@ -10648,6 +10651,8 @@ $font-size-h6:                      16px !default;*/
   position: relative;
   color: #fff;
   background: #00ACC1; }
+  .compare-overview--no-data:after {
+    content: none !important; }
   .compare-overview:after {
     content: "";
     position: absolute;
@@ -10940,7 +10945,10 @@ $font-size-h6:                      16px !default;*/
   width: 100%;
   background: #fff; }
   .message__container.active {
-    opacity: 1; }
+    opacity: 1;
+    -webkit-transition: opacity linear 0s;
+    -o-transition: opacity linear 0s;
+    transition: opacity linear 0s; }
 
 .message__content {
   display: block;
@@ -10966,6 +10974,12 @@ $font-size-h6:                      16px !default;*/
   height: 50px;
   margin-top: -25px;
   margin-left: -25px; }
+
+.message__spinner-text {
+  position: absolute;
+  width: 100%;
+  padding-top: 60px;
+  text-align: center; }
 
 .message__img {
   width: 100%; }
@@ -11043,7 +11057,11 @@ $font-size-h4:                      22px !default;
 $font-size-h5:                      18px !default;
 $font-size-h6:                      16px !default;*/
 #map {
-  height: 100%; }
+  position: absolute;
+  width: 100%;
+  top: 44px;
+  bottom: 55px;
+  z-index: 3; }
 
 /*$border-radius-base:                0 !default;
 $border-radius-large:               0 !default;

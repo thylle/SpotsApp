@@ -33,6 +33,7 @@ var src = {
     scripts: [
         "resources/angular-app/**/*.js",
         "resources/base/**/*.js",
+        "resources/helpers/**/*.js",
         "resources/modules/**/*.js"
     ],
     thirdparty: "resources/3rd-party/**/*.js",
@@ -46,6 +47,7 @@ var scriptBundles = [
     { scripts: ["resources/angular-app/*.js"], output: "angular-app.js" },
     { scripts: ["resources/angular-app/services/*.js"], output: "services.js" },
     { scripts: ["resources/angular-app/controllers/*.js"], output: "controllers.js" },
+    { scripts: ["resources/helpers/**/*.js"], output: "helpers.js" },
     { scripts: ["resources/modules/**/*.js"], output: "modules.js" }
 ];
 

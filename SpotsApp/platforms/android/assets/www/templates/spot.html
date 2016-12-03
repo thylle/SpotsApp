@@ -10,8 +10,8 @@
                         <span>{{currentSpot.Name}}</span>
 
                         <span class="item-image__text--right" data-ng-show="currentSpot.Distance">
-                            <span data-ng-hide="currentSpot.DrivingDistance">
-                                {{currentSpot.Distance}} km <i class="icon ion-plane"></i>
+                            <span data-ng-show="!currentSpot.DrivingDistance">
+                                ca. {{currentSpot.Distance}} km
                             </span>
                             <span data-ng-show="currentSpot.DrivingDistance">
                                 <i class="icon ion-android-car"></i>
@@ -22,8 +22,19 @@
                     </div>
                 </div>
 
+
+                <!--Compare Overview - No Data -->
+                <div class="compare-overview compare-overview--no-data" data-ng-if="!currentSpot.Weather">
+                    <div class="compare-overview__container">
+                        <div class="compare-overview__item">
+                            <span class="icon ion-ios-cloud-outline"></span>
+                            <span>Ingen vejr data</span>
+                        </div>
+                    </div>
+                </div>
+
                 <!--Compare Overview-->
-                <div class="compare-overview" data-ng-click="overviewActive = !overviewActive" data-ng-class="{'active' : overviewActive}">
+                <div class="compare-overview" data-ng-show="currentSpot.Weather" data-ng-click="overviewActive = !overviewActive" data-ng-class="{'active' : overviewActive}">
                     <div class="compare-overview__container">
                         <div class="compare-overview__item">
                             <span class="icon icon ion-speedometer"></span>
@@ -100,7 +111,7 @@
 
                 <div class="row">
                     <div class="col col-50  devider--right">
-                        <a href="#" ng-click="openLinkInBrowser(http://ifm.fcoo.dk/denmark/#zoom=7&lat=55.7&lon=11.1&locate=false&follow=false&level=0&layer=FCOO%20Standard&overlays=Short%20range%20forecasts.windspeed%252CShort%20range%20forecasts.winddirection%252CSafety.MSI%252CSafety.Firing%20warnings)" class="item-next">
+                        <a href="#" ng-click="openLinkInBrowser('http://ifm.fcoo.dk/denmark/#zoom=7&lat=55.7&lon=11.1&locate=false&follow=false&level=0&layer=FCOO%20Standard&overlays=Short%20range%20forecasts.windspeed%252CShort%20range%20forecasts.winddirection%252CSafety.MSI%252CSafety.Firing%20warnings')" class="item-next">
                             <h4 class="next-story">fcoo.dk</h4>
                             <h2>Vejrudsigt</h2>
                             <i class="icon ion-ios-cloud item-next-icon"></i>

@@ -1,6 +1,7 @@
 ﻿//CUSTOM 
 
 //Z-index
+$z-index-map:                       3;
 $z-index-list-item:                 3;
 $z-index-list-item-active:          4;
 $z-index-message:                   4;
@@ -15,12 +16,9 @@ $filter-height:                     90px !default;
 $loading-size:                      50px !default;
 
 
-
-
-
 $white:                             #fff !default;
 $black:                             #181818 !default;
-$green:                             #66BB6A; //Material 400
+$green:                             #66BB6A !default; //Material 400
 $brand-error:                       #ef5350 !default; //Material 400
 $brand-success:                     $green !default;
 

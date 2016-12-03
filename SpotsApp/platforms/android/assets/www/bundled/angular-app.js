@@ -3,7 +3,7 @@
 
     angular.module('app', ['ionic', 'ngAnimate'])
         .constant("settings", {
-            "domain": "http://533ed007.ngrok.io" //ex. 6b050561.ngrok.io // http://spots.local
+            "domain": "http://4311988a.ngrok.io" //ex. 6b050561.ngrok.io // http://spots.local
         })
         .run(function ($ionicPlatform, $ionicConfig) {
             $ionicPlatform.ready(function () {
@@ -45,9 +45,9 @@
                     url: '/map',
                     templateUrl: 'templates/map.html'
                 })
-                .state('about', {
-                    url: '/about',
-                    templateUrl: 'templates/about.html'
+                .state('info', {
+                    url: '/info',
+                    templateUrl: 'templates/info.html'
                 })
                 .state('spot', {
                     url: '/spot/:spotId',

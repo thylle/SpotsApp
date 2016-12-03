@@ -6,35 +6,24 @@ function stateChange($scope, toState, toParams, distanceService, spotsService, s
     stateChangeAnimation($scope, toState);
     ignoreMessagesOnStateChange($scope, toState);
     emptyCurrentSpot($scope, toState, toParams, spotsService, settings);
+    stateChangeLoading($scope, toState);
     loadMapDelayed($scope, toState, distanceService);
 }
 
 
-//Ignore messages (loading and error text)
-function ignoreMessagesOnStateChange($scope, toState) {
-    if (toState.name == "about") {
-        $scope.ignoreMessages = true;
-    } else {
-        $scope.ignoreMessages = false;
+function stateChangeLoading($scope, toState) {
+    if (toState.name == "spot") {
+        $scope.isLoading = true;
+        $scope.loadingMessage = "Henter detaljer";
     }
 }
 
-//Timeout to add data to spots and make view ready
-function loadMapDelayed($scope, toState, distanceService) {
-
-    if (toState.name == "map") {
-        setTimeout(function () {
-            //Check if map is already loaded - if not, load it
-            var $mapContainer = $("#map");
-
-            if ($mapContainer.length <= 0) {
-                $scope.mapCreated = false;
-            }
-            if (!$scope.mapCreated && $mapContainer.length > 0) {
-                createGoogleMaps($scope, distanceService.getCurrentPosition());
-                $scope.mapCreated = true;
-            }
-        }, 1000);
+//Ignore messages (loading and error text)
+function ignoreMessagesOnStateChange($scope, toState) {
+    if (toState.name == "info") {
+        $scope.ignoreMessages = true;
+    } else {
+        $scope.ignoreMessages = false;
     }
 }
 

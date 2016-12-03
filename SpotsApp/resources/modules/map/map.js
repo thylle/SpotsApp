@@ -60,8 +60,6 @@ function setMarkers(map, scope) {
 
 function createGoogleMaps(scope, currentLocation) {
 
-    console.log("creating map");
-
     var locationHorsens = new google.maps.LatLng(55.861175, 9.845964);
 
     var mapOptions = {
@@ -84,4 +82,34 @@ function createGoogleMaps(scope, currentLocation) {
     setMarkers(map, scope);
 
     scope.map = map;
+}
+
+
+//Timeout to make sure Google and data is ready and to show the loading "spinner"
+function loadMapDelayed($scope, toState, distanceService) {
+
+    if (toState.name == "map" && !$scope.pageFailed) {
+        $scope.mapActive = true;
+
+        //Check if map is already loaded - if not, load it
+        if (!$scope.mapCreated) {
+            $scope.isLoading = true;
+            $scope.loadingMessage = "Henter kort";
+
+            setTimeout(function () {
+                createGoogleMaps($scope, distanceService.getCurrentPosition());
+            }, 1000);
+
+            setTimeout(function () {
+                $scope.isLoading = false;
+                $scope.loadingMessage = "";
+                $scope.mapCreated = true;
+                $scope.$apply();
+                console.log("map created");
+            }, 2000);
+        }
+    }
+    else {
+        $scope.mapActive = false;
+    }
 }
