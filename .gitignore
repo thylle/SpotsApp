@@ -15,9 +15,7 @@
 **/App_Data/umbraco.licensing.log.txt
 **/App_Data/access.config
 **/web.backup.*
-Compiled/
-Bundled/
-www/bundled
+
 
 # Ignore Umbraco content cache file
 umbraco.config
@@ -58,6 +56,9 @@ bower_components
 **/www/bundled/
 **/Bundled/
 **/Compiled/
+Compiled/
+Bundled/
+www/bundled/
 
 
 
