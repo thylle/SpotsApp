@@ -33,7 +33,7 @@
                 // "-45" is to make the arrow point to north = 0deg, 
                 // Then we add the current degrees and add 180 to flip it arround
                 // This is so that the arrow points in the wind direction instead of against the direction
-                if ($scope.Weather) {
+                if ($scope.currentSpot.Weather) {
                     $scope.currentSpotWindDegCorrected = (-45 + $scope.currentSpot.Weather.WindDirectionDeg) + 180;
                 }
 
@@ -41,7 +41,7 @@
                     $scope.isLoading = false;
                     $scope.loadingMessage = "";
                     $scope.$apply();
-                }, 1500);
+                }, 500);
 
             }).error(function () {
                 alert("*** ERROR *** Current Spot");
@@ -51,7 +51,7 @@
             });
         },
 
-        //Get users current position
+        //Get users current position, with max 5 attempts
         getCurrentPosition: function (countAttempts, $scope, distanceService) {
             countAttempts++;
             $scope.loadingMessage = "Beregner afstande";
@@ -66,15 +66,16 @@
                 return;
             }
 
-            //Get current position and continue the flow - Else try again after X seconds
+            //Get current position and continue the flow 
             if (distanceService.getCurrentPosition() != null) {
                 spots.updateSpotsDistanceInfo($scope, distanceService);
 
                 if ($scope.currentSpot != null) {
                     distanceService.updateItemDistanceInfo($scope.currentSpot);
                 }
-
-            } else {
+            }
+            //Else try again after X seconds
+            else {
                 setTimeout(function () {
                     spots.getCurrentPosition(countAttempts, $scope, distanceService);
                 }, 2000);
@@ -94,8 +95,11 @@
             }
 
             //Hide loading
-            $scope.isLoading = false;
-            $scope.loadingMessage = "";
+            setTimeout(function() {
+                $scope.isLoading = false;
+                $scope.loadingMessage = "";
+                $scope.$apply();
+            }, 500);
         }
     }
 

@@ -10,6 +10,7 @@
     function initController($rootScope, $scope, $timeout, $state, $window, spotsService, distanceService, settings) {
         $scope.domain = settings.domain;
         $scope.isLoading = true;
+        $scope.inProgress = false;
         $scope.pageFailed = false;
         $scope.ignoreMessages = false;
         $scope.mapCreated = false;
@@ -18,7 +19,8 @@
         $scope.spots = [];
         $scope.currentSpot = null;
         $scope.categoryFilter = '';
-        $scope.userCheckedIn = $window.localStorage['userCheckedIn'] !== "true" ? false : $window.localStorage['userCheckedIn'];
+        $scope.checkedIn = false;
+        $scope.checkedInId = localStorage.getItem("checkedInId");
 
         //TODO API Controller
         $scope.categories = [
@@ -47,15 +49,10 @@
             spots.getAllSpots($scope, $timeout, spotsService, distanceService);
         });
 
-        //$scope.setCurrentSpot = function (item) {
-        //    spots.setCurrentSpotFromItem($scope, settings, item);
-        //}
+        //Init Check-In
+        checkIn.init($scope, $window, spotsService, settings);
 
-        //Check in on a spot
-        $scope.toggleCheckIn = function () {
-            checkIn.toggle($scope, $window, spotsService, settings);
-        }
-
+        //Open link in browser (external)
         $scope.openLinkInBrowser = function(link) {
             window.open(link, '_system', 'location=yes');
             return false;

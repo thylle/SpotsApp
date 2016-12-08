@@ -1,49 +1,69 @@
 
 var checkIn = {
+    init: function ($scope, $window, spotsService, settings) {
+        //Check-in scope function
+        $scope.checkIn = function () {
+            $scope.inProgress = true;
+            $scope.currentSpot.CheckIns = "...";
 
-    //Let users check-in and out on the current spot
-    toggle: function($scope, $window, spotsService, settings) {
-        if ($scope.currentSpot != null) {
-
-            //Check In
-            if ($scope.userCheckedIn === false) {
-                $scope.userCheckedIn = true;
-                $window.localStorage['userCheckedIn'] = true;
-                $scope.currentSpot.CheckIns = "...";
-
-                spotsService.checkInOnSpot($scope.currentSpot.Id).success(function(response) {
-                    console.log("check-in success", response);
-
-                    spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings);
-                })
-                .error(function() {
-                    alert("*** ERROR *** Check-In");
-
-                    $scope.userCheckedIn = false;
-                });
+            if ($scope.checkedInId === null || $scope.checkedInId === "null") {
+                checkIn.checkIn($scope, $window, spotsService, settings);
             }
-
-            //Check Out
+            //If user is already checked in somewhere, we check the user out before checking-in
             else {
-                $scope.userCheckedIn = false;
-                $window.localStorage['userCheckedIn'] = false;
-                $scope.currentSpot.CheckIns = "...";
+                //Check-out on old spot
+                spotsService.checkOutOnSpot($scope.checkedInId);
+                console.log("checked out before checking in, id:", $scope.checkedInId);
 
-                spotsService.checkOutOnSpot($scope.currentSpot.Id).success(function (response) {
-                    console.log("check-out success", response);
-
-                    spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings);
-                })
-                .error(function () {
-                    alert("*** ERROR *** Check-In");
-
-                    $scope.userCheckedIn = true;
-                });
+                setTimeout(function () {
+                    //Check-in on new spot
+                    checkIn.checkIn($scope, $window, spotsService, settings);
+                }, 500);
             }
-        }    
-    }
-}
+        }
+        //Check-out scope function
+        $scope.checkOut = function () {
+            $scope.inProgress = true;
+            $scope.currentSpot.CheckIns = "...";
+            checkIn.checkOut($scope, $window, spotsService, settings);
+        }
+    },
 
+    checkIn: function ($scope, $window, spotsService, settings) {
+        spotsService.checkInOnSpot($scope.currentSpot.Id).success(function () {
+            //Set scope variable and local storage
+            $scope.inProgress = false;
+            $scope.checkedInId = $scope.currentSpot.Id;
+            $window.localStorage['checkedInId'] = $scope.currentSpot.Id;
+
+            console.log("checked in, id:", $scope.checkedInId);
+
+            spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings);
+        })
+        .error(function () {
+            //TODO Error message
+            alert("*** ERROR *** Check-In");
+        });
+    },
+
+    checkOut: function ($scope, $window, spotsService, settings) {
+        spotsService.checkOutOnSpot($scope.checkedInId).success(function () {
+
+            console.log("checked out, id:", $scope.checkedInId);
+
+            //Set scope variable and local storage
+            $scope.inProgress = false;
+            $scope.checkedInId = null;
+            $window.localStorage['checkedInId'] = null;
+
+            spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings);
+        })
+        .error(function () {
+            //TODO Error message
+            alert("*** ERROR *** Check-Out");
+        });
+    }   
+}
 
 
 //Close All Info Windows
@@ -160,81 +180,6 @@ function loadMapDelayed($scope, toState, distanceService) {
         $scope.mapActive = false;
     }
 }
-
-function stateChange($scope, toState, toParams, distanceService, spotsService, settings) {
-
-    console.log("toStateName", toState.name);
-
-    stateChangeAnimation($scope, toState);
-    ignoreMessagesOnStateChange($scope, toState);
-    emptyCurrentSpot($scope, toState, toParams, spotsService, settings);
-    stateChangeLoading($scope, toState);
-    loadMapDelayed($scope, toState, distanceService);
-}
-
-
-function stateChangeLoading($scope, toState) {
-    if (toState.name == "spot") {
-        $scope.isLoading = true;
-        $scope.loadingMessage = "Henter detaljer";
-    }
-}
-
-//Ignore messages (loading and error text)
-function ignoreMessagesOnStateChange($scope, toState) {
-    if (toState.name == "info") {
-        $scope.ignoreMessages = true;
-    } else {
-        $scope.ignoreMessages = false;
-    }
-}
-
-//Empty currentSpot if the view is not where the spot is shown
-function emptyCurrentSpot($scope, toState, toParms, spotsService, settings) {
-    if (toState.name != "spot") {
-        $scope.currentSpot = null;
-        $scope.currentSpotImage = null;
-    } else {
-        spots.getCurrentSpot($scope, spotsService, toParms.spotId, settings);
-    }
-}
-
-//Animate hide/show header and footer bars, based on view
-function stateChangeAnimation($scope, toState) {
-
-    var toStateName = toState.name;
-    var tabHideClass = "tab-nav--hide";
-    var headerFilterHideClass = "header-filter--hide";
-
-    //Add body class to fade elements on state change
-    $("body").addClass("state--change");
-
-    setTimeout(function () {
-        $("body").removeClass("state--change");
-    }, 200);
-
-    
-    //Hide "header filter" on every page except selected view
-    if (toStateName == "list") {
-        $("body")
-            .removeClass(headerFilterHideClass);
-    } else {
-        $("body")
-            .addClass(headerFilterHideClass);
-    }
-
-    //Hide tabs on selected pages
-    if (toStateName == "nameOfViwe") {
-        $("body").addClass(tabHideClass);
-        
-    } else {
-        $("body").removeClass(tabHideClass);
-    }
-}
-            
-
-
-
 (function () {
     'use strict';
 
@@ -316,7 +261,7 @@ function stateChangeAnimation($scope, toState) {
                 // "-45" is to make the arrow point to north = 0deg, 
                 // Then we add the current degrees and add 180 to flip it arround
                 // This is so that the arrow points in the wind direction instead of against the direction
-                if ($scope.Weather) {
+                if ($scope.currentSpot.Weather) {
                     $scope.currentSpotWindDegCorrected = (-45 + $scope.currentSpot.Weather.WindDirectionDeg) + 180;
                 }
 
@@ -324,7 +269,7 @@ function stateChangeAnimation($scope, toState) {
                     $scope.isLoading = false;
                     $scope.loadingMessage = "";
                     $scope.$apply();
-                }, 1500);
+                }, 500);
 
             }).error(function () {
                 alert("*** ERROR *** Current Spot");
@@ -334,7 +279,7 @@ function stateChangeAnimation($scope, toState) {
             });
         },
 
-        //Get users current position
+        //Get users current position, with max 5 attempts
         getCurrentPosition: function (countAttempts, $scope, distanceService) {
             countAttempts++;
             $scope.loadingMessage = "Beregner afstande";
@@ -349,15 +294,16 @@ function stateChangeAnimation($scope, toState) {
                 return;
             }
 
-            //Get current position and continue the flow - Else try again after X seconds
+            //Get current position and continue the flow 
             if (distanceService.getCurrentPosition() != null) {
                 spots.updateSpotsDistanceInfo($scope, distanceService);
 
                 if ($scope.currentSpot != null) {
                     distanceService.updateItemDistanceInfo($scope.currentSpot);
                 }
-
-            } else {
+            }
+            //Else try again after X seconds
+            else {
                 setTimeout(function () {
                     spots.getCurrentPosition(countAttempts, $scope, distanceService);
                 }, 2000);
@@ -377,13 +323,91 @@ function stateChangeAnimation($scope, toState) {
             }
 
             //Hide loading
-            $scope.isLoading = false;
-            $scope.loadingMessage = "";
+            setTimeout(function() {
+                $scope.isLoading = false;
+                $scope.loadingMessage = "";
+                $scope.$apply();
+            }, 500);
         }
     }
 
 
 
 
+
+
+
+
+function stateChange($scope, toState, toParams, distanceService, spotsService, settings) {
+
+    console.log("toStateName", toState.name);
+
+    stateChangeAnimation($scope, toState);
+    ignoreMessagesOnStateChange($scope, toState);
+    emptyCurrentSpot($scope, toState, toParams, spotsService, settings);
+    stateChangeLoading($scope, toState);
+    loadMapDelayed($scope, toState, distanceService);
+}
+
+
+function stateChangeLoading($scope, toState) {
+    if (toState.name == "spot") {
+        $scope.isLoading = true;
+        $scope.loadingMessage = "Henter detaljer";
+    }
+}
+
+//Ignore messages (loading and error text)
+function ignoreMessagesOnStateChange($scope, toState) {
+    if (toState.name == "info") {
+        $scope.ignoreMessages = true;
+    } else {
+        $scope.ignoreMessages = false;
+    }
+}
+
+//Empty currentSpot if the view is not where the spot is shown
+function emptyCurrentSpot($scope, toState, toParms, spotsService, settings) {
+    if (toState.name != "spot") {
+        $scope.currentSpot = null;
+        $scope.currentSpotImage = null;
+    } else {
+        spots.getCurrentSpot($scope, spotsService, toParms.spotId, settings);
+    }
+}
+
+//Animate hide/show header and footer bars, based on view
+function stateChangeAnimation($scope, toState) {
+
+    var toStateName = toState.name;
+    var tabHideClass = "tab-nav--hide";
+    var headerFilterHideClass = "header-filter--hide";
+
+    //Add body class to fade elements on state change
+    $("body").addClass("state--change");
+
+    setTimeout(function () {
+        $("body").removeClass("state--change");
+    }, 200);
+
+    
+    //Hide "header filter" on every page except selected view
+    if (toStateName == "list") {
+        $("body")
+            .removeClass(headerFilterHideClass);
+    } else {
+        $("body")
+            .addClass(headerFilterHideClass);
+    }
+
+    //Hide tabs on selected pages
+    if (toStateName == "nameOfViwe") {
+        $("body").addClass(tabHideClass);
+        
+    } else {
+        $("body").removeClass(tabHideClass);
+    }
+}
+            
 
 

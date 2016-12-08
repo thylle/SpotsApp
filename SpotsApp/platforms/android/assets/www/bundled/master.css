@@ -10233,7 +10233,8 @@ $font-size-h6:                      16px !default;*/
 .bar {
   padding: 5px 15px; }
   .bar .title {
-    margin: 0 15px; }
+    margin: 0 15px;
+    text-align: center !important; }
 
 .scroll-content {
   -webkit-transition: all ease 0.3s;
@@ -10417,6 +10418,9 @@ $font-size-h3:                      26px !default;
 $font-size-h4:                      22px !default;
 $font-size-h5:                      18px !default;
 $font-size-h6:                      16px !default;*/
+.uppercase {
+  text-transform: uppercase; }
+
 .col-spacing {
   padding: 15px; }
   .col-spacing-sides {
@@ -10656,7 +10660,7 @@ $font-size-h6:                      16px !default;*/
   .compare-overview:after {
     content: "";
     position: absolute;
-    top: 100%;
+    top: 99%;
     left: 50%;
     width: 0;
     height: 0;
@@ -10664,6 +10668,8 @@ $font-size-h6:                      16px !default;*/
     border-right: 14px solid transparent;
     border-top: 14px solid #00ACC1;
     transform: translate3d(-50%, 0, 0); }
+  .compare-overview.active:after {
+    opacity: 0; }
   .compare-overview.active .compare-overview__item {
     opacity: 0.3; }
   .compare-overview__container {

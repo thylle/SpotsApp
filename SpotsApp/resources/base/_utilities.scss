@@ -1,6 +1,10 @@
 ﻿@import "../_custom-variables.scss";
 @import "../_custom-mixins.scss";
 
+.uppercase{
+    text-transform: uppercase;
+}
+
 .col-spacing{
     padding: $default-spacing / 2;
 

@@ -3,6 +3,7 @@
         <ion-content>
             <ion-item class="ion-item">
 
+                <!--Image-->
                 <div class="item-image  fade-on-state-change">
                     <div class="item-image__background" data-ng-style="{'background-image': 'url({{currentSpotImage}})'}" data-ng-if="currentSpotImage"></div>
 
@@ -21,7 +22,6 @@
                         </span>
                     </div>
                 </div>
-
 
                 <!--Compare Overview - No Data -->
                 <div class="compare-overview compare-overview--no-data" data-ng-if="!currentSpot.Weather">
@@ -68,11 +68,11 @@
                     </div>
 
                     <div class="compare__item">
-                        <div class="compare__col">{{currentSpot.Weather.WindDirection}}</div>
+                        <div class="compare__col uppercase">{{currentSpot.Weather.WindDirection}}</div>
                         <div class="compare__col compare__col--icon">
                             <span class="icon ion-navigate" ng-style="{'transform': 'rotate('+ currentSpotWindDegCorrected +'deg)'}"></span>
                         </div>
-                        <div class="compare__col">{{currentSpot.OptimalWindDirection}}</div>
+                        <div class="compare__col uppercase">{{currentSpot.OptimalWindDirection}}</div>
                     </div>
 
                     <div class="compare__item">
@@ -93,8 +93,8 @@
                                     {{currentSpot.CheckIns}}
                                     <span class="check-in__label">Surfer her i dag</span>
                                 </span>
-                                <button class="btn btn-primary check-in__button" data-ng-click="toggleCheckIn()" data-ng-if="!userCheckedIn">Jeg surfer her</button>
-                                <button class="btn btn-primary check-in__button active" data-ng-click="toggleCheckIn()" data-ng-if="userCheckedIn">Fortryd <span aria-hidden="true" class="icon ion-android-close"></span></button>
+                                <button class="btn btn-primary check-in__button" data-ng-click="checkIn()" data-ng-if="checkedInId != currentSpot.Id" data-ng-disabled="inProgress">Jeg surfer her</button>
+                                <button class="btn btn-primary check-in__button active" data-ng-click="checkOut()" data-ng-if="checkedInId == currentSpot.Id" data-ng-disabled="inProgress">Fortryd <span aria-hidden="true" class="icon ion-android-close"></span></button>
                             </div>
                         </div>
                     </div>
@@ -106,9 +106,8 @@
                         <pre class="item-description  fade-on-state-change">{{currentSpot.Description}}</pre>
                     </div>
                 </div>
-                <!--<srf-social-share data-config="itemCtrl.share"></srf-social-share>-->
 
-
+                <!--External Links-->
                 <div class="row">
                     <div class="col col-50  devider--right">
                         <a href="#" ng-click="openLinkInBrowser('http://ifm.fcoo.dk/denmark/#zoom=7&lat=55.7&lon=11.1&locate=false&follow=false&level=0&layer=FCOO%20Standard&overlays=Short%20range%20forecasts.windspeed%252CShort%20range%20forecasts.winddirection%252CSafety.MSI%252CSafety.Firing%20warnings')" class="item-next">
@@ -126,7 +125,8 @@
                     </div>
                 </div>
 
-                <!--<div class="item-next">
+                <!--Next Spot
+                    <div class="item-next">
                     <h4 class="next-story">NEXT SPOT</h4>
                     <h2>Hvide Sande Kabelpark - 104km</h2>
                     <i class="icon ion-ios-arrow-right item-next-icon"></i>

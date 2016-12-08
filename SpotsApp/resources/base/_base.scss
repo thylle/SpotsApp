@@ -25,7 +25,8 @@ body {
     padding: 5px $default-spacing / 2;
 
     .title{
-        margin: 0 $default-spacing / 2;    
+        margin: 0 $default-spacing / 2; 
+        text-align: center !important;   
     }
 }
 
