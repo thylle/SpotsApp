@@ -12,7 +12,7 @@
                         <div class="category-item-tools col col-66">
                             <h3 class="category-item__title">{{item.Name}}</h3>
                             <div class="row">
-                                <div class="col item-category" data-ng-show="item.Distance">
+                                <div class="col item-category" data-ng-show="item.Distance != 'NaN'">
                                     <span data-ng-hide="item.DrivingDistance">
                                         ca. {{item.Distance}} km
                                     </span>
@@ -21,6 +21,12 @@
                                     </span>
                                     <span data-ng-show="item.DrivingDuration">
                                         <i class="icon ion-android-time"></i>{{item.DrivingDuration}}
+                                    </span>
+                                </div>
+                                <div class="col item-category" data-ng-show="item.Distance == 'NaN'">
+                                    <span>
+                                        <i class="icon ion-android-car"></i>
+                                        Ingen afstands data
                                     </span>
                                 </div>
                             </div>

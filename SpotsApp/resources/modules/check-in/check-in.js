@@ -1,13 +1,13 @@
 ﻿
 var checkIn = {
-    init: function ($scope, $window, spotsService, settings) {
+    init: function ($scope, $window, spotsService, settings, distanceService) {
         //Check-in scope function
         $scope.checkIn = function () {
             $scope.inProgress = true;
             $scope.currentSpot.CheckIns = "...";
 
             if ($scope.checkedInId === null || $scope.checkedInId === "null") {
-                checkIn.checkIn($scope, $window, spotsService, settings);
+                checkIn.checkIn($scope, $window, spotsService, settings, distanceService);
             }
             //If user is already checked in somewhere, we check the user out before checking-in
             else {
@@ -17,7 +17,7 @@ var checkIn = {
 
                 setTimeout(function () {
                     //Check-in on new spot
-                    checkIn.checkIn($scope, $window, spotsService, settings);
+                    checkIn.checkIn($scope, $window, spotsService, settings, distanceService);
                 }, 500);
             }
         }
@@ -25,11 +25,11 @@ var checkIn = {
         $scope.checkOut = function () {
             $scope.inProgress = true;
             $scope.currentSpot.CheckIns = "...";
-            checkIn.checkOut($scope, $window, spotsService, settings);
+            checkIn.checkOut($scope, $window, spotsService, settings, distanceService);
         }
     },
 
-    checkIn: function ($scope, $window, spotsService, settings) {
+    checkIn: function ($scope, $window, spotsService, settings, distanceService) {
         spotsService.checkInOnSpot($scope.currentSpot.Id).success(function () {
             //Set scope variable and local storage
             $scope.inProgress = false;
@@ -38,7 +38,7 @@ var checkIn = {
 
             console.log("checked in, id:", $scope.checkedInId);
 
-            spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings);
+            spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings, distanceService);
         })
         .error(function () {
             //TODO Error message
@@ -46,7 +46,7 @@ var checkIn = {
         });
     },
 
-    checkOut: function ($scope, $window, spotsService, settings) {
+    checkOut: function ($scope, $window, spotsService, settings, distanceService) {
         spotsService.checkOutOnSpot($scope.checkedInId).success(function () {
 
             console.log("checked out, id:", $scope.checkedInId);
@@ -56,7 +56,7 @@ var checkIn = {
             $scope.checkedInId = null;
             $window.localStorage['checkedInId'] = null;
 
-            spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings);
+            spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings, distanceService);
         })
         .error(function () {
             //TODO Error message

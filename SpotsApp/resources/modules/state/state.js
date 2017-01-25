@@ -1,18 +1,17 @@
 ﻿
 function stateChange($scope, toState, toParams, distanceService, spotsService, settings) {
-
     console.log("toStateName", toState.name);
 
     stateChangeAnimation($scope, toState);
     ignoreMessagesOnStateChange($scope, toState);
-    emptyCurrentSpot($scope, toState, toParams, spotsService, settings);
+    emptyCurrentSpot($scope, toState, toParams, spotsService, settings, distanceService);
     stateChangeLoading($scope, toState);
     loadMapDelayed($scope, toState, distanceService);
 }
 
 
 function stateChangeLoading($scope, toState) {
-    if (toState.name == "spot") {
+    if (toState.name === "spot") {
         $scope.isLoading = true;
         $scope.loadingMessage = "Henter detaljer";
     }
@@ -20,7 +19,7 @@ function stateChangeLoading($scope, toState) {
 
 //Ignore messages (loading and error text)
 function ignoreMessagesOnStateChange($scope, toState) {
-    if (toState.name == "info") {
+    if (toState.name === "info") {
         $scope.ignoreMessages = true;
     } else {
         $scope.ignoreMessages = false;
@@ -28,14 +27,16 @@ function ignoreMessagesOnStateChange($scope, toState) {
 }
 
 //Empty currentSpot if the view is not where the spot is shown
-function emptyCurrentSpot($scope, toState, toParms, spotsService, settings) {
-    if (toState.name != "spot") {
+function emptyCurrentSpot($scope, toState, toParms, spotsService, settings, distanceService) {
+    if (toState.name !== "spot") {
         $scope.currentSpot = null;
         $scope.currentSpotImage = null;
     } else {
-        spots.getCurrentSpot($scope, spotsService, toParms.spotId, settings);
+        spots.getCurrentSpot($scope, spotsService, toParms.spotId, settings, distanceService);
     }
 }
+
+
 
 //Animate hide/show header and footer bars, based on view
 function stateChangeAnimation($scope, toState) {
@@ -53,7 +54,7 @@ function stateChangeAnimation($scope, toState) {
 
     
     //Hide "header filter" on every page except selected view
-    if (toStateName == "list") {
+    if (toStateName === "list") {
         $("body")
             .removeClass(headerFilterHideClass);
     } else {
@@ -62,7 +63,7 @@ function stateChangeAnimation($scope, toState) {
     }
 
     //Hide tabs on selected pages
-    if (toStateName == "nameOfViwe") {
+    if (toStateName === "nameOfViwe") {
         $("body").addClass(tabHideClass);
         
     } else {

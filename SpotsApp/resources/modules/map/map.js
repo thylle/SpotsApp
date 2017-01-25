@@ -19,11 +19,11 @@ function setMarkers(map, scope) {
         var markerIcon = "img/icon-marker.png";
 
         //If element don't have lat and long, we stop adding the marker
-        if (lat != "" && long != "") {
-            if (spot.Category == "Kite") {
+        if (lat !== "" && long !== "") {
+            if (spot.Category === "Kite") {
                 markerIcon = "img/icon-marker-kite.png";
             }
-            if (spot.Category == "Cable") {
+            if (spot.Category === "Cable") {
                 markerIcon = "img/icon-marker-wake.png";
             }
 
@@ -60,23 +60,24 @@ function setMarkers(map, scope) {
 
 function createGoogleMaps(scope, currentLocation) {
 
-    var locationHorsens = new google.maps.LatLng(55.861175, 9.845964);
+    //var locationHorsens = new google.maps.LatLng(55.861175, 9.845964);
+    currentLocation = new google.maps.LatLng(currentLocation.latitude, currentLocation.longitude);
 
     var mapOptions = {
-        center: locationHorsens,
+        center: currentLocation,
         zoom: 7,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
     var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-    map.setCenter(currentLocation);
+    //map.setCenter(currentLocation);
 
     new google.maps.Marker({
         position: currentLocation,
         map: map,
         title: "My Location",
-        icon: "img/icon-marker.png"
+        icon: "img/gmaps-current-pos.png"
     });
 
     setMarkers(map, scope);
@@ -86,9 +87,9 @@ function createGoogleMaps(scope, currentLocation) {
 
 
 //Timeout to make sure Google and data is ready and to show the loading "spinner"
-function loadMapDelayed($scope, toState, distanceService) {
+function loadMapDelayed($scope, toState) {
 
-    if (toState.name == "map" && !$scope.pageFailed) {
+    if (toState.name === "map" && !$scope.pageFailed && $scope.currentCoords) {
         $scope.mapActive = true;
 
         //Check if map is already loaded - if not, load it
@@ -97,7 +98,7 @@ function loadMapDelayed($scope, toState, distanceService) {
             $scope.loadingMessage = "Henter kort";
 
             setTimeout(function () {
-                createGoogleMaps($scope, distanceService.getCurrentPosition());
+                createGoogleMaps($scope, $scope.currentCoords);
             }, 1000);
 
             setTimeout(function () {

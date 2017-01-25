@@ -1,7 +1,7 @@
 ﻿<ion-view view-title="">
     <ion-pane>
         <ion-content>
-            <ion-item class="ion-item">
+            <ion-item class="ion-item" ng-show="!pageFailed">
 
                 <!--Image-->
                 <div class="item-image  fade-on-state-change">
@@ -10,10 +10,7 @@
                     <div class="item-image__text">
                         <span>{{currentSpot.Name}}</span>
 
-                        <span class="item-image__text--right" data-ng-show="currentSpot.Distance">
-                            <span data-ng-show="!currentSpot.DrivingDistance">
-                                ca. {{currentSpot.Distance}} km
-                            </span>
+                        <span class="item-image__text--right" data-ng-show="currentSpot.DrivingDistance">
                             <span data-ng-show="currentSpot.DrivingDistance">
                                 <i class="icon ion-android-car"></i>
                                 {{currentSpot.DrivingDistance}}.<br />
@@ -110,8 +107,9 @@
                 <!--External Links-->
                 <div class="row">
                     <div class="col col-50  devider--right">
-                        <a href="#" ng-click="openLinkInBrowser('http://ifm.fcoo.dk/denmark/#zoom=7&lat=55.7&lon=11.1&locate=false&follow=false&level=0&layer=FCOO%20Standard&overlays=Short%20range%20forecasts.windspeed%252CShort%20range%20forecasts.winddirection%252CSafety.MSI%252CSafety.Firing%20warnings')" class="item-next">
-                            <h4 class="next-story">fcoo.dk</h4>
+                        <!--<a href="#" ng-click="openLinkInBrowser('http://ifm.fcoo.dk/denmark/#zoom=7&lat=55.7&lon=11.1&locate=false&follow=false&level=0&layer=FCOO%20Standard&overlays=Short%20range%20forecasts.windspeed%252CShort%20range%20forecasts.winddirection%252CSafety.MSI%252CSafety.Firing%20warnings')" class="item-next">-->
+                        <a href="#" ng-click="openLinkInBrowser(currentSpot.WeatherUrl)" class="item-next">
+                            <h4 class="next-story">yr.no</h4>
                             <h2>Vejrudsigt</h2>
                             <i class="icon ion-ios-cloud item-next-icon"></i>
                         </a>
