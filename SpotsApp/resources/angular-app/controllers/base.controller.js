@@ -16,6 +16,7 @@
         $scope.mapCreated = false;
         $scope.mapActive = false;
         $scope.overviewActive = false;
+        $scope.currentCoords = null;
         $scope.spots = [];
         $scope.currentSpot = null;
         $scope.categoryFilter = '';
@@ -46,11 +47,11 @@
         //Wait for the document to load
         //We can do this because all content is coming from Angular
         $(window).load(function () {
-            spots.getAllSpots($scope, $timeout, spotsService, distanceService);
+            spots.init($scope, $timeout, spotsService, distanceService);
         });
 
         //Init Check-In
-        checkIn.init($scope, $window, spotsService, settings);
+        checkIn.init($scope, $window, spotsService, settings, distanceService);
 
         //Open link in browser (external)
         $scope.openLinkInBrowser = function(link) {
@@ -61,7 +62,6 @@
         //On state change
         //This is initialized on load as well.
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-
             //State change functions
             stateChange($scope, toState, toParams, distanceService, spotsService, settings);
         });

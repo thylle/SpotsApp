@@ -3,7 +3,7 @@
 
     angular.module('app', ['ionic', 'ngAnimate'])
         .constant("settings", {
-            "domain": "http://facde2e7.ngrok.io" //ex. 6b050561.ngrok.io // http://spots.local
+            "domain": "http://spots.thylle.dk" //ex. http://facde2e7.ngrok.io // http://spots.local // http://spots.thylle.dk
         })
         .run(function ($ionicPlatform, $ionicConfig) {
             $ionicPlatform.ready(function () {

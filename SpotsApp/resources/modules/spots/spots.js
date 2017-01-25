@@ -1,21 +1,34 @@
 ﻿
     var spots = {
-        init: function () {
+        init: function ($scope, $timeout, spotsService, distanceService) {
+            $scope.currentCoords = distanceService.getCurrentCoords();
 
+            if ($scope.currentCoords != null) {
+                spots.getAllSpots($scope, $timeout, spotsService, distanceService);
+            }
+            //Else try again after X seconds
+            else {
+                setTimeout(function () {
+                    $scope.loadingMessage = "Beregner afstand...";
+                    spots.init($scope, $timeout, spotsService, distanceService);
+                }, 2000);
+            }
         },
 
         //Get all spots
         getAllSpots: function ($scope, $timeout, spotsService, distanceService) {
-            spotsService.getAllSpots().success(function (response) {
+            spotsService.getAllSpots($scope.currentCoords).success(function (response) {
                 $scope.spots = response;
-                $scope.loadingMessage = "";
                 console.log("success", response);
 
-                //Get current position + a number to count attempts
-                spots.getCurrentPosition(0, $scope, distanceService);
+                //Set distance info on every spot
+                spots.updateSpotsDistanceInfo($scope, distanceService);
+
+                if ($scope.currentSpot != null) {
+                    distanceService.updateItemDistanceInfo($scope.currentSpot);
+                }
             })
             .error(function () {
-                alert("*** ERROR *** All Spots");
                 $scope.pageFailed = true;
                 $scope.isLoading = false;
                 $scope.loadingMessage = "";
@@ -23,10 +36,10 @@
         },
 
         //Get Current spot by ID from the URL
-        getCurrentSpot: function ($scope, spotsService, id, settings) {
+        getCurrentSpot: function ($scope, spotsService, id, settings, distanceService) {
+
             spotsService.getSpotById(id).success(function (response) {
                 console.log("getCurrentSpot", response);
-
                 $scope.currentSpot = response;
                 $scope.currentSpotImage = settings.domain + $scope.currentSpot.Image + "?width=400&height=200&mode=crop&format=jpg";
                 $scope.currentSpotMapsLink = "http://maps.google.com/?q=" + $scope.currentSpot.Latitude + "," + $scope.currentSpot.Longitude;
@@ -37,51 +50,22 @@
                     $scope.currentSpotWindDegCorrected = (-45 + $scope.currentSpot.Weather.WindDirectionDeg) + 180;
                 }
 
+                //Get distance info by Google Maps
+                distanceService.updateItemDistanceInfo($scope.currentSpot);
+
                 setTimeout(function() {
                     $scope.isLoading = false;
                     $scope.loadingMessage = "";
                     $scope.$apply();
-                }, 500);
+                }, 1000);
 
             }).error(function () {
-                alert("*** ERROR *** Current Spot");
                 $scope.pageFailed = true;
                 $scope.isLoading = false;
-                $scope.loadingMessage = "";
+                $scope.loadingMessage = "Der skete en fejl på dette spot - prøv igen senere";
             });
         },
-
-        //Get users current position, with max 5 attempts
-        getCurrentPosition: function (countAttempts, $scope, distanceService) {
-            countAttempts++;
-            $scope.loadingMessage = "Beregner afstande";
-
-            console.log("getCurrentPosition CountAttempts", countAttempts);
-
-            //If we have tried 5 times, we stop trying and hide the loading screen
-            if (countAttempts >= 5) {
-                $scope.isLoading = false;
-                $scope.loadingMessage = "";
-                $scope.$apply();
-                return;
-            }
-
-            //Get current position and continue the flow 
-            if (distanceService.getCurrentPosition() != null) {
-                spots.updateSpotsDistanceInfo($scope, distanceService);
-
-                if ($scope.currentSpot != null) {
-                    distanceService.updateItemDistanceInfo($scope.currentSpot);
-                }
-            }
-            //Else try again after X seconds
-            else {
-                setTimeout(function () {
-                    spots.getCurrentPosition(countAttempts, $scope, distanceService);
-                }, 2000);
-            }
-        },
-
+        
         //Adding distance from Google to every spot
         updateSpotsDistanceInfo: function ($scope, distanceService) {
             console.log("updateSpotsDistanceInfo");
@@ -89,7 +73,7 @@
             for (var i = 0; i < $scope.spots.length; i++) {
                 var item = $scope.spots[i];
 
-                if (item.Latitude != "" && item.Longitude != "") {
+                if (item.Latitude !== "" && item.Longitude !== "") {
                     distanceService.updateItemDistanceInfo(item);
                 }
             }
@@ -99,7 +83,7 @@
                 $scope.isLoading = false;
                 $scope.loadingMessage = "";
                 $scope.$apply();
-            }, 500);
+            }, 1000);
         }
     }
 

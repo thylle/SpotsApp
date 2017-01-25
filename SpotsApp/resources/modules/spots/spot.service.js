@@ -15,9 +15,10 @@
 
         var domainUrl = settings.domain;
 
-        function getAllSpots() {
+        function getAllSpots(coords) {
             var apiUrl = "/Umbraco/Api/Spots/GetAllSpots";
-            var url = domainUrl + apiUrl;
+            var coordsUrl = "?lat=" + coords.latitude + "&lon=" + coords.longitude;
+            var url = domainUrl + apiUrl + coordsUrl;
             
             return $http.get(url);
         }
