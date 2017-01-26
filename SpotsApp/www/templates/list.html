@@ -3,11 +3,13 @@
     <ion-nav-title>Alle Spots</ion-nav-title>
     <ion-pane>
         <ion-content>
+            <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()"></ion-refresher>
+
             <ion-list>
-                <ion-item class="category-ion-item  fade-in" data-ui-sref="spot({spotId: item.Id})" data-ng-repeat="item in spots | orderBy : 'Distance' | filter : {Category: categoryFilter} | filter : searchSpots" >
+                <ion-item class="category-ion-item  fade-in" data-ui-sref="spot({spotId: item.Id})" data-ng-repeat="item in spots | orderBy : 'Distance' | filter : {Category: categoryFilter} | filter : searchSpots">
                     <div class="row row-wrap category-items">
                         <div class="category-item__image col col-33">
-                            <img data-ng-src="{{domain}}{{item.Image}}?width=200&height=150&mode=crop&format=jpg&quality=80" alt="{{item.Name}}" />
+                            <img data-ng-src="{{domain}}{{item.Image}}?width=200&height=150&mode=crop&format=jpg&quality=80" alt="{{item.Name}}"/>
                         </div>
                         <div class="category-item-tools col col-66">
                             <h3 class="category-item__title">{{item.Name}}</h3>

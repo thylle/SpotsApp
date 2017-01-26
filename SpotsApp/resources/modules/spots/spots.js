@@ -56,6 +56,7 @@
                 setTimeout(function() {
                     $scope.isLoading = false;
                     $scope.loadingMessage = "";
+                    $scope.$broadcast('scroll.refreshComplete');
                     $scope.$apply();
                 }, 1000);
 
@@ -82,6 +83,7 @@
             setTimeout(function() {
                 $scope.isLoading = false;
                 $scope.loadingMessage = "";
+                $scope.$broadcast('scroll.refreshComplete');
                 $scope.$apply();
             }, 1000);
         }

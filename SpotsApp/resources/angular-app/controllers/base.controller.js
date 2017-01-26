@@ -39,6 +39,15 @@
             }
         ];
         
+        $scope.doRefresh = function () {
+            console.log("pull refreshing -----------------------");
+            $scope.currentCoords = null;
+
+            setTimeout(function() {
+                spots.init($scope, $timeout, spotsService, distanceService);
+            }, 500);
+        };
+
         //Category filter in the header
         $scope.filterByCategory = function (item) {
             $scope.categoryFilter = item.Filter;
