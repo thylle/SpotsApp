@@ -8,25 +8,25 @@
     },
     "installed_plugins": {
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.ionicframework.ionicblankapp"
+            "PACKAGE_NAME": "com.thylle.spotsapp"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.ionicframework.ionicblankapp"
+            "PACKAGE_NAME": "com.thylle.spotsapp"
         },
         "cordova-plugin-geolocation": {
-            "PACKAGE_NAME": "com.ionicframework.ionicblankapp"
+            "PACKAGE_NAME": "com.thylle.spotsapp"
         },
         "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "com.ionicframework.ionicblankapp"
+            "PACKAGE_NAME": "com.thylle.spotsapp"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.ionicframework.ionicblankapp"
+            "PACKAGE_NAME": "com.thylle.spotsapp"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.ionicframework.ionicblankapp"
+            "PACKAGE_NAME": "com.thylle.spotsapp"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.ionicblankapp"
+            "PACKAGE_NAME": "com.thylle.spotsapp"
         }
     },
     "dependent_plugins": {}

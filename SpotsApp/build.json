@@ -1,0 +1,11 @@
+{
+ "android": {
+     "release": {
+         "keystore":"c:\\spotsapp-release-key.keystore",
+         "storePassword":"chokolade",
+         "alias":"thylle",
+         "password":"chokolade",
+         "keystoreType":""
+       }
+   }
+}

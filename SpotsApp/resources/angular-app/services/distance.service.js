@@ -28,7 +28,7 @@
             var originsUrl = "&origins=" + currentLatitude + "," + currentLongitude;
             var destinationsUrl = "&destinations=" + spotLatitude + "," + spotLongitude;
             var finalDistanceUrl = googleDistanceUrl + originsUrl + destinationsUrl + googleApiKey;
-
+            
             return $http.get(finalDistanceUrl);
         }
 
@@ -37,7 +37,7 @@
                 //Get precise driving distance and duration from Google
                 getDistanceInfo(currentCoords.latitude, currentCoords.longitude, spot.Latitude, spot.Longitude).then(function (response) {
                     var elements = response.data.rows[0].elements[0];
-
+                    
                     if (elements.status !== "ZERO_RESULTS") {
                         spot.DrivingDistance = elements.distance.text;
                         spot.DrivingDuration = elements.duration.text;
