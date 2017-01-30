@@ -16,8 +16,7 @@
     <script src="lib/ionic/js/ionic.bundle.min.js"></script>
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
-    <!--Google Maps Api - Is before HTML because we need this for a lot of features and the app is useless without distance data-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-mzmZW2hh4fsg0WnnyhiIMkpCApvI2sU&sensor=true&libraries=geometry"></script>
+    
 
 </head>
 <body ng-app="app" class="header-filter--hide  tab-nav--hide">
@@ -59,6 +58,10 @@
                 Indhold ikke hentet<br />
                 <small ng-if="!loadingMessage">Tjek at du har forbindelse til internettet eller prøv igen senere</small>
                 <small ng-if="loadingMessage">{{loadingMessage}}</small>
+
+                <br/>
+                <br/>
+                <button class="button button-positive" data-ng-click="refreshApp()">Prøv igen</button>
             </div>
         </div>
     </div>
@@ -79,5 +82,8 @@
     <script src="bundled/services.js"></script>
     <script src="bundled/modules.js"></script>
     <script src="bundled/controllers.js"></script>
+
+    <!--Google Maps Api - for the google maps tab-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-mzmZW2hh4fsg0WnnyhiIMkpCApvI2sU&libraries=geometry"></script>
 </body>
 </html>

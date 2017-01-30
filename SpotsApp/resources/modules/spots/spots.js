@@ -1,6 +1,16 @@
 ﻿
     var spots = {
-        init: function ($scope, $timeout, spotsService, distanceService) {
+        init: function ($scope, $timeout, spotsService, distanceService, countAttempts) {
+            countAttempts++;
+            console.log("spots init attempts", countAttempts);
+
+            //If we have tried 10 times, we stop trying and just get the spots without it.
+            if (countAttempts >= 10) {
+                spots.getAllSpots($scope, $timeout, spotsService, distanceService);
+                return;
+            }
+
+            //Get current coords
             $scope.currentCoords = distanceService.getCurrentCoords();
 
             if ($scope.currentCoords != null) {
@@ -10,8 +20,8 @@
             else {
                 setTimeout(function () {
                     $scope.loadingMessage = "Beregner afstand...";
-                    spots.init($scope, $timeout, spotsService, distanceService);
-                }, 2000);
+                    spots.init($scope, $timeout, spotsService, distanceService, countAttempts);
+                }, 3000);
             }
         },
 

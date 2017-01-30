@@ -5,10 +5,10 @@
     &__container{
         @include transition(opacity linear 0.3s);
         will-change: opacity;
-        pointer-events: none;
+        //pointer-events: none;
         opacity: 0;
         position: fixed;
-        z-index: $z-index-message;
+        z-index: -1;
         top: 0;
         left: 0;
         bottom: 0;
@@ -16,6 +16,7 @@
         background: $white;
 
         &.active{
+            z-index: $z-index-message;
             opacity: 1;
             @include transition(opacity linear 0s);
         }

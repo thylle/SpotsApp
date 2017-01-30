@@ -39,12 +39,26 @@
             }
         ];
         
+        
+        //Refresh app manualy
+        $scope.refreshApp = function() {
+            $scope.pageFailed = false;
+            $scope.isLoading = true;
+            $scope.loadingMessage = "";
+            $scope.currentCoords = null;
+
+            setTimeout(function () {
+                spots.init($scope, $timeout, spotsService, distanceService, 0);
+            }, 500);
+        };
+
+        //Pull to refresh
         $scope.doRefresh = function () {
             console.log("pull refreshing -----------------------");
             $scope.currentCoords = null;
 
-            setTimeout(function() {
-                spots.init($scope, $timeout, spotsService, distanceService);
+            setTimeout(function () {
+                spots.init($scope, $timeout, spotsService, distanceService, 0);
             }, 500);
         };
 
@@ -56,7 +70,7 @@
         //Wait for the document to load
         //We can do this because all content is coming from Angular
         $(window).load(function () {
-            spots.init($scope, $timeout, spotsService, distanceService);
+            spots.init($scope, $timeout, spotsService, distanceService, 0);
         });
 
         //Init Check-In

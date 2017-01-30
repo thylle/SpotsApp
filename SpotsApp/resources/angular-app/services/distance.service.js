@@ -33,7 +33,7 @@
         }
 
         function updateItemDistanceInfo(spot) {
-            if (spot.Latitude !== "" && spot.Longitude !== "") {
+            if (spot.Latitude !== "" && spot.Longitude !== "" && currentCoords) {
                 //Get precise driving distance and duration from Google
                 getDistanceInfo(currentCoords.latitude, currentCoords.longitude, spot.Latitude, spot.Longitude).then(function (response) {
                     var elements = response.data.rows[0].elements[0];
