@@ -11,6 +11,16 @@ body.header-filter--hide{
     .header-filter{
         transform: translate3d(0, -($header-height + $filter-height), 0);
     }
+
+    &-important{
+        .scroll-content{
+            top: $header-height !important;
+        }
+
+        .header-filter{
+            transform: translate3d(0, -($header-height + $filter-height), 0) !important;
+        }
+    }
 }
 
 .bar-positive.nav-bar-container{

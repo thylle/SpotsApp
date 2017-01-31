@@ -47,6 +47,8 @@
             $scope.loadingMessage = "";
             $scope.currentCoords = null;
 
+            $state.go('list');
+
             setTimeout(function () {
                 spots.init($scope, $timeout, spotsService, distanceService, 0);
             }, 500);
@@ -86,7 +88,7 @@
         //This is initialized on load as well.
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             //State change functions
-            stateChange($scope, toState, toParams, distanceService, spotsService, settings);
+            stateChange($scope, toState, toParams, distanceService, spotsService, settings, $window);
         });
     }
 })();

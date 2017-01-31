@@ -1,10 +1,10 @@
 ﻿
-function stateChange($scope, toState, toParams, distanceService, spotsService, settings) {
+function stateChange($scope, toState, toParams, distanceService, spotsService, settings, $window) {
     console.log("toStateName", toState.name);
 
     stateChangeAnimation($scope, toState);
     ignoreMessagesOnStateChange($scope, toState);
-    emptyCurrentSpot($scope, toState, toParams, spotsService, settings, distanceService);
+    emptyCurrentSpot($scope, toState, toParams, spotsService, settings, distanceService, $window);
     stateChangeLoading($scope, toState);
     loadMapDelayed($scope, toState, distanceService);
 }
@@ -27,12 +27,12 @@ function ignoreMessagesOnStateChange($scope, toState) {
 }
 
 //Empty currentSpot if the view is not where the spot is shown
-function emptyCurrentSpot($scope, toState, toParms, spotsService, settings, distanceService) {
+function emptyCurrentSpot($scope, toState, toParms, spotsService, settings, distanceService, $window) {
     if (toState.name !== "spot") {
         $scope.currentSpot = null;
         $scope.currentSpotImage = null;
     } else {
-        spots.getCurrentSpot($scope, spotsService, toParms.spotId, settings, distanceService);
+        spots.getCurrentSpot($scope, spotsService, toParms.spotId, settings, distanceService, $window);
     }
 }
 
@@ -43,7 +43,7 @@ function stateChangeAnimation($scope, toState) {
 
     var toStateName = toState.name;
     var tabHideClass = "tab-nav--hide";
-    var headerFilterHideClass = "header-filter--hide";
+    var headerFilterHideClass = "header-filter--hide-important";
 
     //Add body class to fade elements on state change
     $("body").addClass("state--change");
@@ -54,21 +54,23 @@ function stateChangeAnimation($scope, toState) {
 
     
     //Hide "header filter" on every page except selected view
-    if (toStateName === "list") {
+    if (toStateName === "list" && !$scope.pageFailed) {
         $("body")
             .removeClass(headerFilterHideClass);
-    } else {
+    }
+
+    if ((toStateName === "map" || toStateName === "spot" || toStateName === "info") && !$scope.pageFailed) {
         $("body")
             .addClass(headerFilterHideClass);
     }
 
     //Hide tabs on selected pages
-    if (toStateName === "nameOfViwe") {
-        $("body").addClass(tabHideClass);
+    //if (toStateName === "nameOfViwe") {
+    //    $("body").addClass(tabHideClass);
         
-    } else {
-        $("body").removeClass(tabHideClass);
-    }
+    //} else {
+    //    $("body").removeClass(tabHideClass);
+    //}
 }
             
 

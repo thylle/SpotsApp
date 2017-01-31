@@ -19,8 +19,8 @@
     
 
 </head>
-<body ng-app="app" class="header-filter--hide  tab-nav--hide">
-    <div role="main" ng-controller="baseController">
+<body ng-app="app" ng-controller="baseController" class="header-filter--hide tab-nav--hide" ng-class="{'header-filter--hide tab-nav--hide' : isLoading || pageFailed}">
+    <div role="main">
         <ion-nav-bar class="bar-positive">
             <ion-nav-back-button>
             </ion-nav-back-button>

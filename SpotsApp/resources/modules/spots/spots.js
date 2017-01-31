@@ -46,7 +46,7 @@
         },
 
         //Get Current spot by ID from the URL
-        getCurrentSpot: function ($scope, spotsService, id, settings, distanceService) {
+        getCurrentSpot: function ($scope, spotsService, id, settings, distanceService, $window) {
 
             spotsService.getSpotById(id).success(function (response) {
                 console.log("getCurrentSpot", response);
@@ -58,6 +58,11 @@
                 // This is so that the arrow points in the wind direction instead of against the direction
                 if ($scope.currentSpot.Weather) {
                     $scope.currentSpotWindDegCorrected = (-45 + $scope.currentSpot.Weather.WindDirectionDeg) + 180;
+                }
+
+                //Remove the old cookie from last time the user checked in - if the count has been reset since.
+                if ($scope.checkedInId === $scope.currentSpot.Id && $scope.currentSpot.CheckIns === 0) {
+                    $window.localStorage['checkedInId'] = null;
                 }
 
                 //Get distance info by Google Maps

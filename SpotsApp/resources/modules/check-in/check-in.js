@@ -1,6 +1,7 @@
 ﻿
 var checkIn = {
     init: function ($scope, $window, spotsService, settings, distanceService) {
+
         //Check-in scope function
         $scope.checkIn = function () {
             $scope.inProgress = true;
@@ -30,7 +31,7 @@ var checkIn = {
     },
 
     checkIn: function ($scope, $window, spotsService, settings, distanceService) {
-        spotsService.checkInOnSpot($scope.currentSpot.Id).success(function () {
+        spotsService.checkInOnSpot($scope.currentSpot.Id).success(function() {
             //Set scope variable and local storage
             $scope.inProgress = false;
             $scope.checkedInId = $scope.currentSpot.Id;
@@ -38,11 +39,11 @@ var checkIn = {
 
             console.log("checked in, id:", $scope.checkedInId);
 
-            spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings, distanceService);
+            spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings, distanceService, $window);
         })
         .error(function () {
             //TODO Error message
-            alert("*** ERROR *** Check-In");
+            alert("Der skete desværre en fejl, da vi prøvede at tjekke dig ind på dette spot.");
         });
     },
 
@@ -56,11 +57,11 @@ var checkIn = {
             $scope.checkedInId = null;
             $window.localStorage['checkedInId'] = null;
 
-            spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings, distanceService);
+            spots.getCurrentSpot($scope, spotsService, $scope.currentSpot.Id, settings, distanceService, $window);
         })
         .error(function () {
             //TODO Error message
-            alert("*** ERROR *** Check-Out");
+            alert("Der skete desværre en fejl, da vi prøvede at tjekke dig ud på dette spot. Du bliver automatisk tjekket ud når dagen er omme eller hvis du tjekker ind på et andet spot.");
         });
     }   
 }
