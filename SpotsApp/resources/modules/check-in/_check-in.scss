@@ -17,6 +17,11 @@
         display: inline-block;
     }
 
+    &__title{
+        display: block;
+        margin-bottom: $default-spacing/2;
+    }
+
     &__count{
         display: block;
         float: left;

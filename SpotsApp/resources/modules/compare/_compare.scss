@@ -73,22 +73,40 @@
         color: $white;
         background: $brand-primary;
 
-        &:nth-child(odd){
+        &:nth-child(even){
             background-color: $brand-primary-light;
+
+            .compare__col{
+                border-color: $brand-primary;
+            }
         }
     }
     
 
     &__col{
-        width: 50%;
+        width: 33.3%;
         float: left;
         padding: $default-spacing/2;
         text-align: center;
+        border-left: 1px solid rgba($brand-primary-dark, 0.5);
+
+        &:first-child {
+            border: 0;
+        }
 
         &--headline{
             padding: $default-spacing/4;
             font-weight: bold;
             text-transform: uppercase;
+        }
+
+        &--table-headline{
+            font-weight: bold;
+            text-align: left;
+        }
+
+        &--multiple-lines{
+            padding-top: 28px;
         }
 
         &--icon{

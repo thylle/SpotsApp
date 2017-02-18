@@ -7,6 +7,11 @@
                 <div class="item-image  fade-on-state-change">
                     <div class="item-image__background" data-ng-style="{'background-image': 'url({{currentSpotImage}})'}" data-ng-if="currentSpotImage"></div>
 
+                    <div class="item-image__weather">
+                        <!--<span class="icon {{currentSpot.Weather.WeatherIcon}}"></span>-->
+                        <span>{{currentSpot.Weather.Degrees}}°</span>
+                    </div>
+
                     <div class="item-image__text">
                         <span>{{currentSpot.Name}}</span>
 
@@ -31,7 +36,7 @@
                 </div>
 
                 <!--Compare Overview-->
-                <div class="compare-overview" data-ng-show="currentSpot.Weather" data-ng-click="overviewActive = !overviewActive" data-ng-class="{'active' : overviewActive}">
+                <!--<div class="compare-overview" data-ng-show="currentSpot.Weather" data-ng-click="overviewActive = !overviewActive" data-ng-class="{'active' : overviewActive}">
                     <div class="compare-overview__container">
                         <div class="compare-overview__item">
                             <span class="icon icon ion-speedometer"></span>
@@ -46,51 +51,62 @@
                             <span>{{currentSpot.Weather.Degrees}}°</span>
                         </div>
                     </div>
-                </div>
-
-                <!--Compare Container (hidden by default)-->
-                <div class="compare__container" data-ng-show="overviewActive">
+                </div>-->
+                <!--Compare Container -->
+                <div class="compare__container" ng-if="currentSpot.Weather">
                     <div class="compare__item">
+                        <div class="compare__col compare__col--headline compare__col--icon">
+                            <span class="icon {{currentSpot.Weather.WeatherIcon}}"></span>
+                        </div>
                         <div class="compare__col compare__col--headline">Lige nu</div>
-                        <div class="compare__col compare__col--headline"></div>
                         <div class="compare__col compare__col--headline">Optimalt</div>
                     </div>
 
-                    <div class="compare__item">
-                        <div class="compare__col">{{currentSpot.Weather.WindSpeed}} m/s</div>
-                        <div class="compare__col compare__col--icon">
-                            <span class="icon ion-speedometer"></span>
+                    <div class="compare__item" ng-if="currentSpot.Category === 'Kite'">
+                        <div class="compare__col compare__col--table-headline">
+                            Vindstyrke:
+                            <!--<span class="icon ion-speedometer"></span>-->
                         </div>
+                        <div class="compare__col">{{currentSpot.Weather.WindSpeed}} m/s</div>
                         <div class="compare__col">{{currentSpot.OptimalWindSpeed}} m/s</div>
                     </div>
 
                     <div class="compare__item">
-                        <div class="compare__col uppercase">{{currentSpot.Weather.WindDirection}}</div>
-                        <div class="compare__col compare__col--icon">
-                            <span class="icon ion-navigate" ng-style="{'transform': 'rotate('+ currentSpotWindDegCorrected +'deg)'}"></span>
+                        <div class="compare__col compare__col--table-headline compare__col--multiple-lines">
+                            Vindretning:
                         </div>
-                        <div class="compare__col uppercase">{{currentSpot.OptimalWindDirection}}</div>
+                        <div class="compare__col  compare__col--icon uppercase">
+                            <span class="icon ion-navigate" ng-style="{'transform': 'rotate('+ currentSpotWindDegCorrected +'deg)'}"></span>
+                            {{currentSpot.Weather.WindDirection}}
+                        </div>
+                        <div class="compare__col compare__col--icon uppercase">
+                            <span class="icon ion-navigate" ng-style="{'transform': 'rotate('+ currentSpotOptimalWindDeg +'deg)'}"></span>
+                            {{currentSpot.OptimalWindDirection}}
+                        </div>
                     </div>
 
-                    <div class="compare__item">
+                    <!--<div class="compare__item">
                         <div class="compare__col">{{currentSpot.Weather.Degrees}}°</div>
                         <div class="compare__col compare__col--icon">
                             <span class="icon {{currentSpot.Weather.WeatherIcon}}"></span>
                         </div>
                         <div class="compare__col">8°</div>
-                    </div>
+                    </div>-->
                 </div>
 
                 <!--Check In Button-->
-                <div class="default-margin-top default-margin-bottom-half clearfix">
+                <div class="default-margin-top-half default-margin-bottom-half clearfix">
                     <div class="check-in">
                         <div class="check-in__col">
+
                             <div class="check-in__count-container">
+                                <strong class="check-in__title">Fortæl andre om du surfer her</strong>
+
                                 <span class="check-in__count">
                                     {{currentSpot.CheckIns}}
                                     <span class="check-in__label">Surfer her i dag</span>
                                 </span>
-                                <button class="btn btn-primary check-in__button" data-ng-click="checkIn()" data-ng-if="checkedInId != currentSpot.Id" data-ng-disabled="inProgress">Jeg surfer her</button>
+                                <button class="btn btn-primary check-in__button" data-ng-click="checkIn()" data-ng-if="checkedInId != currentSpot.Id" data-ng-disabled="inProgress">Check-in</button>
                                 <button class="btn btn-primary check-in__button active" data-ng-click="checkOut()" data-ng-if="checkedInId == currentSpot.Id" data-ng-disabled="inProgress">Fortryd <span aria-hidden="true" class="icon ion-android-close"></span></button>
                             </div>
                         </div>

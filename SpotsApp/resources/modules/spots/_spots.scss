@@ -53,6 +53,21 @@ $category-animation-delay: 0.0s;
         background-size: cover;
     }
 
+    &__weather{
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 15px;
+        font-size: 1.8em;
+        color: $white;
+        text-align: right;
+        text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+
+        .icon{
+            font-size: 1.2em;
+        }
+    }
+
     &__text{
         position: absolute;
         bottom: 0;
