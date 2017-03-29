@@ -40,8 +40,10 @@
     }
 
     &__button{
+        display: block;        
         width: 140px;
         height: 64px;
+        float: right;
         line-height: 64px;
         margin-left: $default-spacing/2;
         padding: 0;

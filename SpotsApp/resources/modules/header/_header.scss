@@ -4,19 +4,25 @@
 
 body.header-filter--hide{
 
-    .scroll-content{
-        top: $header-height;
-    }
+    // &.platform-ios .scroll-content,
+    // .scroll-content{
+    //     top: $header-height;
+    // }
 
-    .header-filter{
-        transform: translate3d(0, -($header-height + $filter-height), 0);
-    }
+    // &.platform-ios .header-filter,
+    // .header-filter{
+    //     transform: translate3d(0, -($header-height + $filter-height), 0);
+    // }
 
     &-important{
+        &.platform-ios .scroll-content{
+            top: $header-height + 20 !important;
+        }
         .scroll-content{
             top: $header-height !important;
         }
 
+        &.platform-ios .header-filter,
         .header-filter{
             transform: translate3d(0, -($header-height + $filter-height), 0) !important;
         }
@@ -27,6 +33,11 @@ body.header-filter--hide{
     display: block;
     min-height: $header-height;
     background: $brand-error;
+}
+
+
+.platform-ios .header-filter{
+    top: $header-height + 10 !important;
 }
 
 .header-filter{
