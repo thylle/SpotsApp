@@ -14,6 +14,7 @@
             $scope.currentCoords = distanceService.getCurrentCoords();
 
             if ($scope.currentCoords != null) {
+                console.log("currentCoods", $scope.currentCoords);
                 spots.getAllSpots($scope, $timeout, spotsService, distanceService);
             }
             //Else try again after X seconds
@@ -27,6 +28,7 @@
 
         //Get all spots
         getAllSpots: function ($scope, $timeout, spotsService, distanceService) {
+
             spotsService.getAllSpots($scope.currentCoords).success(function (response) {
                 $scope.spots = response;
                 console.log("success", response);
