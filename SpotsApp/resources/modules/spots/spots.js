@@ -14,6 +14,15 @@
             $scope.currentCoords = distanceService.getCurrentCoords();
 
             if ($scope.currentCoords != null) {
+                //On iOS we cannot get correct current position. We get some where in California. Therefor we set it manually.
+                if($scope.currentCoords.latitude === 37.785834 && $scope.currentCoords.longitude === -122.406417){
+                    $scope.currentCoords.latitude = "55.86057576512128";
+                    $scope.currentCoords.longitude = "9.856608436528028";
+                }
+
+                console.log("currentCoods lat", $scope.currentCoords.latitude);
+                console.log("currentCoods lon", $scope.currentCoords.longitude);
+
                 console.log("currentCoods", $scope.currentCoords);
                 spots.getAllSpots($scope, $timeout, spotsService, distanceService);
             }
