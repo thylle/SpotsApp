@@ -32,6 +32,7 @@
 .tab-nav{
     @include transition(transform ease 0.3s);
     transform: translate3d(0, 0, 0);
+    box-shadow: 0 0 6px 1px #999;
 }
 
 

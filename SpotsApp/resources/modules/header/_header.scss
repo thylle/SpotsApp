@@ -24,7 +24,7 @@ body.header-filter--hide{
 
         &.platform-ios .header-filter,
         .header-filter{
-            transform: translate3d(0, -($header-height + $filter-height), 0) !important;
+            transform: translate3d(0, -($header-height + $filter-height + $default-spacing), 0) !important;
         }
     }
 }
@@ -49,7 +49,8 @@ body.header-filter--hide{
     width: 100%;
     height: $filter-height;
     color: $white;
-    background: $brand-primary;    
+    background: $brand-primary;  
+    box-shadow: 0 0 6px 1px #999;  
 
     //Hack to give blue background to whole header when loading content - because Ionic header hasent been loaded.
     &:before{
@@ -63,7 +64,7 @@ body.header-filter--hide{
 
     &__search{
         padding: 0 $default-spacing / 2;
-        margin-bottom: $default-spacing/3;
+        margin-top: $default-spacing/6;
 
         label{
             position: relative;
@@ -99,20 +100,20 @@ body.header-filter--hide{
     &__button-col{
         width: 33.3%;
         float: left;
-        padding: 0 $default-spacing/2;
+        padding: 0;
 
         button{
             display: block;
             width: 100%;
-            padding: 0;
-            line-height: 2.2em;
+            padding: 16px $default-spacing/6 9px; //Magic numbers to align filter to height of the header
+            line-height: 1.4em;
             color: $white;
-            border: 1px solid $white;
+            border: 0;
+            border-bottom: 2px solid transparent;
             background: transparent;
 
             &.active{
-                color: $brand-primary;
-                background: $white;
+                border-color: $white;
             }
         }
     }

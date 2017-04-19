@@ -20,8 +20,8 @@
 
                 //TODO RETURN Latitude 0.0 Longitude 0.0, if error ------------------------------ TODO //
 
-                alert('Error getting current position \n code: '    + error.code    + '\n' +
-                    'message: ' + error.message + '\n');
+                //console.log('Error getting current position \n code: '    + error.code    + '\n' +
+                //    'message: ' + error.message + '\n');
             });
 
             return currentCoords;

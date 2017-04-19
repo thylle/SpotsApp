@@ -1,13 +1,13 @@
 ﻿
 
 (function () {
-    initController.$inject = ["$rootScope", "$scope", "$timeout", "$state", "$window", "spotsService", "distanceService", "settings"];
+    initController.$inject = ["$rootScope", "$scope", "$state", "$window", "spotsService", "distanceService", "settings"];
 
     angular
         .module("app")
         .controller("baseController", initController);
 
-    function initController($rootScope, $scope, $timeout, $state, $window, spotsService, distanceService, settings) {
+    function initController($rootScope, $scope, $state, $window, spotsService, distanceService, settings) {
         $scope.domain = settings.domain;
         $scope.isLoading = true;
         $scope.inProgress = false;
@@ -15,7 +15,6 @@
         $scope.ignoreMessages = false;
         $scope.mapCreated = false;
         $scope.mapActive = false;
-        $scope.overviewActive = false;
         $scope.currentCoords = null;
         $scope.spots = [];
         $scope.currentSpot = null;
@@ -47,10 +46,10 @@
             $scope.loadingMessage = "";
             $scope.currentCoords = null;
 
-            $state.go('list');
+            $state.go('home');
 
             setTimeout(function () {
-                spots.init($scope, $timeout, spotsService, distanceService, 0);
+                spots.init($scope, spotsService, distanceService, 0);
             }, 500);
         };
 
@@ -60,7 +59,7 @@
             $scope.currentCoords = null;
 
             setTimeout(function () {
-                spots.init($scope, $timeout, spotsService, distanceService, 0);
+                spots.init($scope, spotsService, distanceService, 0);
             }, 500);
         };
 
@@ -69,20 +68,39 @@
             $scope.categoryFilter = item.Filter;
         }
         
+
         //Wait for the document to load
         //We can do this because all content is coming from Angular
         $(window).load(function () {
-            spots.init($scope, $timeout, spotsService, distanceService, 0);
+            spots.init($scope, spotsService, distanceService, 0);
         });
+
 
         //Init Check-In
         checkIn.init($scope, $window, spotsService, settings, distanceService);
+
+
+        $scope.shortenName = function(string) {
+            var length = 50;
+            if (string.length >= length) {
+                return string.substring(0, length) + "...";
+            }
+
+            return string;
+        }
 
         //Open link in browser (external)
         $scope.openLinkInBrowser = function(link) {
             window.open(link, '_system', 'location=yes');
             return false;
         }
+
+        //Get wind direction in degress from e.g. "WNW"
+        $scope.calculateWindDegressFromDirection = function(direction) {
+            // "calculateWindDegressFromDirection" is a helper function found in "helpers.js"
+            return calculateWindDegressFromDirection(direction);
+        }
+        
 
         //On state change
         //This is initialized on load as well.

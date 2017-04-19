@@ -40,8 +40,23 @@ body {
     bottom: $tabs-height;
 }
 
-.item-content{
-    padding: $default-spacing / 2 0;
+
+.item{
+
+    &-content{
+        padding: $default-spacing / 2 0;
+    }
+
+    &-description{
+        margin-bottom: $default-spacing/2 !important;
+        font-size: $font-size-base;
+        font-family: $font-family-sans-serif;
+    }
+
+    p{
+        margin-bottom: $default-spacing/2 !important;
+        font-size: $font-size-base;
+    }
 }
 
 .content-page{

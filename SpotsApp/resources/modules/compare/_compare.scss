@@ -110,9 +110,28 @@
         }
 
         &--icon{
-            //padding: $default-spacing/4;
-            //line-height: 1em;
+            text-align: center;
 
+            &-weather{
+                display: inline-block;
+                max-height: 15px;
+
+                span{
+                    line-height: 1em;
+                    float: left;
+                }
+
+                .icon{
+                    display: inline;
+                    font-size: 1.8em;
+                    margin: 0;
+                }
+            
+                .temperature{
+                    line-height: 2.0em;
+                    margin-left: 6px;
+                }
+            }
             .icon{
                 display: block;
                 font-size: 1.8em;

@@ -1,4 +1,6 @@
 ﻿
+
+
 //Close All Info Windows
 var infoWindows = [];
 function closeAllInfoWindows() {
@@ -14,8 +16,8 @@ function setMarkers(map, scope) {
         var spot = scope.spots[i];
         var spotId = spot.Id;
         var spotName = spot.Name;
-        var lat = scope.spots[i].Latitude;
-        var long = scope.spots[i].Longitude;
+        var lat = spot.Latitude;
+        var long = spot.Longitude;
         var markerIcon = "img/icon-marker.png";
 
         //If element don't have lat and long, we stop adding the marker
@@ -39,12 +41,12 @@ function setMarkers(map, scope) {
             var infowindow = new google.maps.InfoWindow();
             infoWindows.push(infowindow);
 
-            var content = '<h4 style="min-width: 110px;">' + spotName + '</h4>'
-                    + '<div class="clearfix">'
-                        + '<p style="margin: 0;">' + '<i class="icon ion-android-car"></i>' + spot.DrivingDistance + '</p>'
-                        + '<p>' + '<i class="icon ion-android-time"></i>' + spot.DrivingDuration + '</p>'
-                    + '</div>'
-                    + '<p><a href="#/spot/' + spotId + '" class="button button-outline button-positive">Se spottet</a></p>';
+            var content = '<h4 style="min-width: 160px;">' + spotName + '</h4>'
+                + '<div class="clearfix">'
+                + '<p style="margin: 0;">' + '<i class="icon ion-android-car"></i>' + spot.DrivingDistance + '</p>'
+                + '<p>' + '<i class="icon ion-android-time"></i>' + spot.DrivingDuration + '</p>'
+                + '</div>'
+                + '<p><a href="#/spot/' + spotId + '" class="button button-outline button-positive">Tjek spottet</a></p>';
 
             google.maps.event.addListener(marker, 'click', (function (marker, content, infowindow) {
                 return function () {

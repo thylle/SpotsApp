@@ -6,10 +6,12 @@
                 <!--Image-->
                 <div class="item-image  fade-on-state-change">
                     <div class="item-image__background" data-ng-style="{'background-image': 'url({{currentSpotImage}})'}" data-ng-if="currentSpotImage"></div>
-
-                    <div class="item-image__weather">
-                        <!--<span class="icon {{currentSpot.Weather.WeatherIcon}}"></span>-->
-                        <span>{{currentSpot.Weather.Degrees}}°</span>
+                    
+                    <div ng-if="currentSpot.Weather">
+                        <div class="item-image__optimal-info" ng-if="currentSpot.IsSpotOptimal">
+                            <span class="icon ion-checkmark-circled"></span>
+                            Surfs up!
+                        </div>    
                     </div>
 
                     <div class="item-image__text">
@@ -35,63 +37,44 @@
                     </div>
                 </div>
 
-                <!--Compare Overview-->
-                <!--<div class="compare-overview" data-ng-show="currentSpot.Weather" data-ng-click="overviewActive = !overviewActive" data-ng-class="{'active' : overviewActive}">
-                    <div class="compare-overview__container">
-                        <div class="compare-overview__item">
-                            <span class="icon icon ion-speedometer"></span>
-                            <span>{{currentSpot.Weather.WindSpeed}} m/s</span>
-                        </div>
-                        <div class="compare-overview__item">
-                            <span class="icon icon ion-navigate rotate-icon" ng-style="{'transform': 'rotate('+ currentSpotWindDegCorrected +'deg)'}"></span>
-                            <span>{{currentSpot.Weather.WindDirection}}</span>
-                        </div>
-                        <div class="compare-overview__item">
-                            <span class="icon {{currentSpot.Weather.WeatherIcon}}"></span>
-                            <span>{{currentSpot.Weather.Degrees}}°</span>
-                        </div>
-                    </div>
-                </div>-->
                 <!--Compare Container -->
                 <div class="compare__container" ng-if="currentSpot.Weather">
+
+                    <!--Compare Header-->
                     <div class="compare__item">
                         <div class="compare__col compare__col--headline compare__col--icon">
-                            <span class="icon {{currentSpot.Weather.WeatherIcon}}"></span>
+                            <span class="compare__col--icon-weather">
+                                <span class="icon {{currentSpot.Weather.WeatherIcon}}"></span>
+                                <span class="temperature">{{currentSpot.Weather.Degrees}}°</span>
+                            </span>
                         </div>
                         <div class="compare__col compare__col--headline">Lige nu</div>
                         <div class="compare__col compare__col--headline">Optimalt</div>
                     </div>
 
-                    <div class="compare__item" ng-if="currentSpot.Category === 'Kite'">
+                    <!--Compare Wind Speed-->
+                    <div class="compare__item">
                         <div class="compare__col compare__col--table-headline">
-                            Vindstyrke:
-                            <!--<span class="icon ion-speedometer"></span>-->
+                            Vindstyrke: <br />
                         </div>
                         <div class="compare__col">{{currentSpot.Weather.WindSpeed}} m/s</div>
-                        <div class="compare__col">{{currentSpot.OptimalWindSpeed}} m/s</div>
+                        <div class="compare__col"><span ng-if="currentSpot.Category == 'Cable'">Max. </span> {{currentSpot.OptimalWindSpeed}} m/s</div>
                     </div>
 
+                    <!--Compare Wind Direction-->
                     <div class="compare__item">
                         <div class="compare__col compare__col--table-headline compare__col--multiple-lines">
-                            Vindretning:
+                            Vindretning: <br/>
                         </div>
                         <div class="compare__col  compare__col--icon uppercase">
-                            <span class="icon ion-navigate" ng-style="{'transform': 'rotate('+ currentSpotWindDegCorrected +'deg)'}"></span>
+                            <span class="icon ion-navigate" ng-style="{'transform': 'rotate('+ calculateWindDegressFromDirection(currentSpot.Weather.WindDirection) +'deg)'}"></span>
                             {{currentSpot.Weather.WindDirection}}
                         </div>
                         <div class="compare__col compare__col--icon uppercase">
-                            <span class="icon ion-navigate" ng-style="{'transform': 'rotate('+ currentSpotOptimalWindDeg +'deg)'}"></span>
+                            <span class="icon ion-navigate" ng-style="{'transform': 'rotate('+ calculateWindDegressFromDirection(currentSpot.OptimalWindDirection) +'deg)'}"></span>
                             {{currentSpot.OptimalWindDirection}}
                         </div>
                     </div>
-
-                    <!--<div class="compare__item">
-                        <div class="compare__col">{{currentSpot.Weather.Degrees}}°</div>
-                        <div class="compare__col compare__col--icon">
-                            <span class="icon {{currentSpot.Weather.WeatherIcon}}"></span>
-                        </div>
-                        <div class="compare__col">8°</div>
-                    </div>-->
                 </div>
 
                 <!--Check In Button-->
@@ -122,7 +105,7 @@
 
                 <!--External Links-->
                 <div class="row">
-                    <div class="col col-50  devider--right">
+                    <div class="col col-50  external-link  devider--right">
                         <!--<a href="#" ng-click="openLinkInBrowser('http://ifm.fcoo.dk/denmark/#zoom=7&lat=55.7&lon=11.1&locate=false&follow=false&level=0&layer=FCOO%20Standard&overlays=Short%20range%20forecasts.windspeed%252CShort%20range%20forecasts.winddirection%252CSafety.MSI%252CSafety.Firing%20warnings')" class="item-next">-->
                         <a href="#" ng-click="openLinkInBrowser(currentSpot.WeatherUrl)" class="item-next">
                             <h4 class="next-story">yr.no</h4>
@@ -130,11 +113,29 @@
                             <i class="icon ion-ios-cloud item-next-icon"></i>
                         </a>
                     </div>
-                    <div class="col col-50">
-                        <a href="#" ng-click="openLinkInBrowser(currentSpotMapsLink)" class="item-next">
+                    <div class="col col-50  external-link">
+                        <a href="#" ng-click="openLinkInBrowser(currentSpot.GoogleMapsLink)" class="item-next">
                             <h4 class="next-story">Google Maps</h4>
                             <h2>Find vej</h2>
                             <i class="icon ion-location item-next-icon"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!--Social External Links-->
+                <div class="row">
+                    <div class="col col-50  external-link  devider--right" ng-show="currentSpot.FacebookUrl">
+                        <a href="#" ng-click="openLinkInBrowser(currentSpot.FacebookUrl)" class="item-next">
+                            <h4 class="next-story">facebook.com</h4>
+                            <h2>Facebook Page</h2>
+                            <i class="icon ion-social-facebook item-next-icon"></i>
+                        </a>
+                    </div>
+                    <div class="col col-50  external-link" ng-show="currentSpot.WebsiteUrl">
+                        <a href="#" ng-click="openLinkInBrowser(currentSpot.WebsiteUrl)" class="item-next">
+                            <h4 class="next-story">www</h4>
+                            <h2>Website</h2>
+                            <i class="icon ion-monitor item-next-icon"></i>
                         </a>
                     </div>
                 </div>

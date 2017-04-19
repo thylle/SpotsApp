@@ -15,6 +15,12 @@
 }
 
 
+@mixin align-vertically(){
+    display: flex;
+    align-items: center;
+}
+
+
 @mixin title-font(){
     font-family: $font-family-alt;
     font-weight: 700;
