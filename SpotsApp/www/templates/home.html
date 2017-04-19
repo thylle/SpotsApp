@@ -9,11 +9,11 @@
                 <ion-item class="category-ion-item  fade-in" data-ui-sref="spot({spotId: item.Id})" data-ng-repeat="item in spots | orderBy : 'Distance' | filter : {Category: categoryFilter} | filter : searchSpots">
                     <div class="row row-wrap category-items">
                         <div class="category-item__image col col-33">
-                            <img data-ng-src="{{domain}}{{item.Image}}?width=200&height=150&mode=crop&format=jpg&quality=80" alt="{{item.Name}}"/>
+                            <img data-ng-src="{{domain}}{{item.Image}}?width=200&height=150&mode=crop&format=jpg&quality=80" alt="{{item.Name}}" />
                         </div>
                         <div class="category-item-tools col col-66">
-                            <h3 class="category-item__title">{{item.Name}}</h3>
-                            <div class="row">
+                            <h3 class="category-item__title">{{shortenName(item.Name)}}</h3>
+                            <div class="category-item__content">
                                 <div class="col item-category" data-ng-show="item.Distance != 'NaN' && item.Distance <= 3000">
                                     <span data-ng-hide="item.DrivingDistance">
                                         ca. {{item.Distance}} km
@@ -31,6 +31,13 @@
                                         Ingen afstands data
                                     </span>
                                 </div>
+                            </div>
+
+                            <!--Weather Data-->
+                            <div class="category-item__weather weather-box" data-ng-if="item.Weather" ng-class="{'optimal' : item.IsSpotOptimal}">
+                                <span class="icon ion-navigate" ng-style="{'transform': 'rotate('+ calculateWindDegressFromDirection(item.Weather.WindDirection) + 'deg)'}"></span>
+                                <span class="speed">{{item.Weather.WindSpeed}}</span>
+                                <span class="">m/s</span>
                             </div>
                         </div>
                     </div>

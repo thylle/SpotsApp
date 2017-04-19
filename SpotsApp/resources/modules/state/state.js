@@ -37,13 +37,23 @@ function emptyCurrentSpot($scope, toState, toParms, spotsService, settings, dist
 }
 
 
+function toggleAnimateHeader(show) {
+    var $body = $("body");
+    var headerFilterHideClass = "header-filter--hide-important";
+
+    if (show) {
+        $body.removeClass(headerFilterHideClass);
+    } else {
+        $body.addClass(headerFilterHideClass);
+    }
+}
+
 
 //Animate hide/show header and footer bars, based on view
 function stateChangeAnimation($scope, toState) {
 
     var toStateName = toState.name;
     var tabHideClass = "tab-nav--hide";
-    var headerFilterHideClass = "header-filter--hide-important";
 
     //Add body class to fade elements on state change
     $("body").addClass("state--change");
@@ -54,14 +64,18 @@ function stateChangeAnimation($scope, toState) {
 
     
     //Hide "header filter" on every page except selected view
-    if (toStateName === "list" && !$scope.pageFailed) {
-        $("body")
-            .removeClass(headerFilterHideClass);
+    if (toStateName === "home" && !$scope.pageFailed) {
+        toggleAnimateHeader(true);
     }
 
     if ((toStateName === "map" || toStateName === "spot" || toStateName === "info") && !$scope.pageFailed) {
-        $("body")
-            .addClass(headerFilterHideClass);
+        toggleAnimateHeader(false);
+    }
+
+    if (toStateName === "spot") {
+        $(".nav-bar-container").show();
+    } else {
+        $(".nav-bar-container").hide();
     }
 
     //Hide tabs on selected pages

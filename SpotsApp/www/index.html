@@ -16,8 +16,6 @@
     <script src="lib/ionic/js/ionic.bundle.min.js"></script>
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
-    
-
 </head>
 <body ng-app="app" ng-controller="baseController" class="header-filter--hide tab-nav--hide" ng-class="{'header-filter--hide tab-nav--hide' : isLoading || pageFailed}">
     <div role="main">
@@ -67,7 +65,7 @@
     </div>
 
     <ion-tabs class="tabs-icon-top tabs-positive">
-        <ion-tab title="Liste" icon="ion-ios-list-outline" href="#/list">
+        <ion-tab title="Oversigt" icon="ion-ios-home-outline" href="#/home">
         </ion-tab>
 
         <ion-tab title="Kort" icon="ion-ios-location-outline" href="#/map">
@@ -77,7 +75,9 @@
         </ion-tab>
     </ion-tabs>
 
+
     <script src="lib/jquery.min.js"></script>
+    <script src="bundled/helpers.js"></script>
     <script src="bundled/angular-app.js"></script>
     <script src="bundled/services.js"></script>
     <script src="bundled/modules.js"></script>

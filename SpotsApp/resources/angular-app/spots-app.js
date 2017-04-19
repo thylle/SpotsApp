@@ -3,7 +3,11 @@
 
     angular.module('app', ['ionic', 'ngAnimate'])
         .constant("settings", {
-            "domain": "http://spots.thylle.dk" //ex. http://facde2e7.ngrok.io // http://spots.local // http://spots.thylle.dk
+            "domain": "http://spots.thylle.dk", //ex. http://facde2e7.ngrok.io // http://spots.local // http://spots.thylle.dk
+            "categories": {
+                "kite": "Kite",
+                "cable": "Cable"
+            }
         })
         .run(function ($ionicPlatform, $ionicConfig) {
             $ionicPlatform.ready(function () {
@@ -37,9 +41,9 @@
             $ionicConfigProvider.tabs.position('bottom');
 
             $stateProvider
-                .state('list', {
-                    url: '/list',
-                    templateUrl: 'templates/list.html'
+                .state('home', {
+                    url: '/home',
+                    templateUrl: 'templates/home.html'
                 })
                 .state('map', {
                     url: '/map',
@@ -59,7 +63,7 @@
                 });
 
             // if none of the above states are matched, use this as the fallback
-            $urlRouterProvider.otherwise('/list');
+            $urlRouterProvider.otherwise('/home');
         });
 })();
 
