@@ -17,7 +17,7 @@
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 </head>
-<body ng-app="app" ng-controller="baseController" class="header-filter--hide tab-nav--hide" ng-class="{'header-filter--hide tab-nav--hide' : isLoading || pageFailed}">
+<body ng-app="app" ng-controller="baseController" class="header-filter--hide tab-nav--hide" ng-class="[{'header-filter--hide tab-nav--hide' : isLoading || pageFailed, 'header-filter--hide-important' : currentState !== 'home'}]">
     <div role="main">
         <ion-nav-bar class="bar-positive">
             <ion-nav-back-button>
