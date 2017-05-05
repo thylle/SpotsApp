@@ -108,7 +108,6 @@
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             //State change functions
             $scope.currentState = toState.name;
-            console.log("s state --- ", $scope.currentState);
             stateChange($scope, toState, toParams, distanceService, spotsService, settings, $window);
         });
     }
