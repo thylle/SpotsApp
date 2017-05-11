@@ -31,12 +31,9 @@ body {
 }
 
 
-.platform-ios .scroll-content{
-    top: $header-height + $filter-height + 10 !important;
-}
 .scroll-content{
     @include transition(all ease 0.3s);
-    top: $header-height + $filter-height;
+    top: $header-height + $filter-height !important;
     bottom: $tabs-height;
 }
 
