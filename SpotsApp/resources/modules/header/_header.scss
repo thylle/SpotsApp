@@ -2,32 +2,23 @@
 @import "../../_custom-variables.scss";
 
 
-body.header-filter--hide{
+body.header-filter--hide,
+body.header-filter--hide-important{
 
-    // &.platform-ios .scroll-content,
-    // .scroll-content{
-    //     top: $header-height;
-    // }
+    &.platform-ios .scroll-content{
+        top: $header-height + 20 !important;
+    }
+    .scroll-content{
+        top: $header-height !important;
+    }
 
-    // &.platform-ios .header-filter,
-    // .header-filter{
-    //     transform: translate3d(0, -($header-height + $filter-height), 0);
-    // }
-
-    &-important{
-        &.platform-ios .scroll-content{
-            top: $header-height + 20 !important;
-        }
-        .scroll-content{
-            top: $header-height !important;
-        }
-
-        &.platform-ios .header-filter,
-        .header-filter{
-            transform: translate3d(0, -($header-height + $filter-height + $default-spacing), 0) !important;
-        }
+    &.platform-ios .header-filter,
+    .header-filter{
+        transform: translate3d(0, -($header-height + $filter-height + $default-spacing), 0) !important;
     }
 }
+
+
 
 .bar-positive.nav-bar-container{
     display: block;

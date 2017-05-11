@@ -71,8 +71,9 @@
                 $scope.currentSpot = response;
                 $scope.currentSpotImage = settings.domain + $scope.currentSpot.Image + "?width=440&height=248&mode=crop&format=jpg";
                 
-                //Remove the old cookie from last time the user checked in, if the count has been reset since.
-                if ($scope.checkedInId === $scope.currentSpot.Id && $scope.currentSpot.CheckIns === 0) {
+                //Remove the old cookie and checkedInId from last time the user checked in, if the count has been reset since.
+                if ($scope.checkedInId === $scope.currentSpot.Id.toString() && $scope.currentSpot.CheckIns === 0) {
+                    $scope.checkedInId = null;
                     $window.localStorage['checkedInId'] = null;
                 }
 

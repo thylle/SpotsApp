@@ -21,6 +21,7 @@
         $scope.categoryFilter = '';
         $scope.checkedIn = false;
         $scope.checkedInId = localStorage.getItem("checkedInId");
+        $scope.currentState = null;
 
         //TODO API Controller
         $scope.categories = [
@@ -106,6 +107,7 @@
         //This is initialized on load as well.
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
             //State change functions
+            $scope.currentState = toState.name;
             stateChange($scope, toState, toParams, distanceService, spotsService, settings, $window);
         });
     }
