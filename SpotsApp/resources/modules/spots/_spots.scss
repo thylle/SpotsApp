@@ -24,6 +24,12 @@ $category-animation-delay: 0.0s;
 //Overview item
 .category-item{
 
+    &__title{
+        &.optimal{
+            color: $brand-success;
+        }
+    }
+
     &__image{
         position: relative;
         padding-bottom: 25%;

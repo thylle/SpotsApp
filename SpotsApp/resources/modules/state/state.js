@@ -50,9 +50,9 @@ function stateChangeAnimation($scope, toState) {
     }, 200);
 
     if (toStateName === "spot") {
-        $(".nav-bar-container").show();
+        $(".nav-bar-container").show().addClass("show");
     } else {
-        $(".nav-bar-container").hide();
+        $(".nav-bar-container").hide().removeClass("show");
     }
 }
             

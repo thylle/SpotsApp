@@ -6,12 +6,12 @@
                 <!--Image-->
                 <div class="item-image  fade-on-state-change">
                     <div class="item-image__background" data-ng-style="{'background-image': 'url({{currentSpotImage}})'}" data-ng-if="currentSpotImage"></div>
-                    
+
                     <div ng-if="currentSpot.Weather">
                         <div class="item-image__optimal-info" ng-if="currentSpot.IsSpotOptimal">
                             <span class="icon ion-checkmark-circled"></span>
                             Surfs up!
-                        </div>    
+                        </div>
                     </div>
 
                     <div class="item-image__text">
@@ -24,6 +24,19 @@
                                 {{currentSpot.DrivingDuration}}
                             </span>
                         </span>
+                    </div>
+                </div>
+
+                <!-- weather diagram rendered with JS-->
+                <div id="weather-diagram">
+                    <div class="diagram__info" ng-if="currentSpot.Weather">
+                        <p>Vind lige nu</p>
+                        <p class="icon ion-navigate" ng-style="{'transform': 'rotate('+ calculateWindDegressFromDirection(currentSpot.Weather[0].WindDirection) +'deg)'}"></p>
+                        <!--<p>{{currentSpot.Weather[0].WindDirection}}</p>-->
+                        <p class="diagram__info--speed">
+                            <span>{{currentSpot.Weather[0].WindSpeed}}</span>
+                            <span>m/s</span>
+                        </p>
                     </div>
                 </div>
 
@@ -44,8 +57,8 @@
                     <div class="compare__item">
                         <div class="compare__col compare__col--headline compare__col--icon">
                             <span class="compare__col--icon-weather">
-                                <span class="icon {{currentSpot.Weather.WeatherIcon}}"></span>
-                                <span class="temperature">{{currentSpot.Weather.Degrees}}°</span>
+                                <span class="icon {{currentSpot.Weather[0].WeatherIcon}}"></span>
+                                <span class="temperature">{{currentSpot.Weather[0].Degrees}}°</span>
                             </span>
                         </div>
                         <div class="compare__col compare__col--headline">Lige nu</div>
@@ -57,18 +70,18 @@
                         <div class="compare__col compare__col--table-headline">
                             Vindstyrke: <br />
                         </div>
-                        <div class="compare__col">{{currentSpot.Weather.WindSpeed}} m/s</div>
+                        <div class="compare__col">{{currentSpot.Weather[0].WindSpeed}} m/s</div>
                         <div class="compare__col"><span ng-if="currentSpot.Category == 'Cable'">Max. </span> {{currentSpot.OptimalWindSpeed}} m/s</div>
                     </div>
 
                     <!--Compare Wind Direction-->
                     <div class="compare__item">
                         <div class="compare__col compare__col--table-headline compare__col--multiple-lines">
-                            Vindretning: <br/>
+                            Vindretning: <br />
                         </div>
                         <div class="compare__col  compare__col--icon uppercase">
-                            <span class="icon ion-navigate" ng-style="{'transform': 'rotate('+ calculateWindDegressFromDirection(currentSpot.Weather.WindDirection) +'deg)'}"></span>
-                            {{currentSpot.Weather.WindDirection}}
+                            <span class="icon ion-navigate" ng-style="{'transform': 'rotate('+ calculateWindDegressFromDirection(currentSpot.Weather[0].WindDirection) +'deg)'}"></span>
+                            {{currentSpot.Weather[0].WindDirection}}
                         </div>
                         <div class="compare__col compare__col--icon uppercase">
                             <span class="icon ion-navigate" ng-style="{'transform': 'rotate('+ calculateWindDegressFromDirection(currentSpot.OptimalWindDirection) +'deg)'}"></span>

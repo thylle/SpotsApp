@@ -3,7 +3,7 @@
 
     angular.module('app', ['ionic', 'ngAnimate'])
         .constant("settings", {
-            "domain": "http://spots.thylle.dk", //ex. http://facde2e7.ngrok.io // http://spots.local // http://spots.thylle.dk
+            "domain": "http://spots.local", //ex. http://facde2e7.ngrok.io // http://spots.local // http://spots.thylle.dk
             "categories": {
                 "kite": "Kite",
                 "cable": "Cable"

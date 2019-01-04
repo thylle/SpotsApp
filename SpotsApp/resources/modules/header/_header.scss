@@ -19,11 +19,15 @@ body.header-filter--hide-important{
 }
 
 
-
 .bar-positive.nav-bar-container{
     display: block;
+    top: -$header-back-button-height;
     min-height: $header-height;
     background: $brand-error;
+
+    &.show{
+        top: 0;
+    }
 }
 
 
@@ -39,6 +43,7 @@ body.header-filter--hide-important{
     top: $header-height;
     width: 100%;
     height: $filter-height;
+    padding-top: $default-spacing/3;
     color: $white;
     background: $brand-primary;  
     box-shadow: 0 0 6px 1px #999;  

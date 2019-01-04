@@ -80,6 +80,9 @@
                 //Get distance info by Google Maps
                 distanceService.updateItemDistanceInfo($scope.currentSpot);
 
+                //Draw weather diagram
+                drawWeatherDiagram($scope.currentSpot.OptimalWindDirectionList);
+
                 setTimeout(function() {
                     $scope.isLoading = false;
                     $scope.loadingMessage = "";

@@ -18,15 +18,24 @@ function setMarkers(map, scope) {
         var spotName = spot.Name;
         var lat = spot.Latitude;
         var long = spot.Longitude;
-        var markerIcon = "img/icon-marker.png";
+        var isSpotOptimal = spot.IsSpotOptimal;
+        var markerIcon = "img/icon-marker-big.png";
 
         //If element don't have lat and long, we stop adding the marker
         if (lat !== "" && long !== "") {
             if (spot.Category === "Kite") {
-                markerIcon = "img/icon-marker-kite.png";
+                if (isSpotOptimal) {
+                    markerIcon = "img/icon-marker-kite-optimal.png";
+                } else {
+                    markerIcon = "img/icon-marker-kite.png";
+                }
             }
             if (spot.Category === "Cable") {
-                markerIcon = "img/icon-marker-wake.png";
+                if (isSpotOptimal) {
+                    markerIcon = "img/icon-marker-wake-optimal.png";
+                } else {
+                    markerIcon = "img/icon-marker-wake.png";
+                }
             }
 
             var position = new google.maps.LatLng(lat, long);

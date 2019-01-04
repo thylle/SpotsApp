@@ -1,6 +1,5 @@
 ﻿
 <ion-view>
-    <ion-nav-title>Alle Spots</ion-nav-title>
     <ion-pane>
         <ion-content>
             <ion-refresher pulling-text="Pull to refresh..." on-refresh="doRefresh()"></ion-refresher>
@@ -12,7 +11,7 @@
                             <img data-ng-src="{{domain}}{{item.Image}}?width=200&height=150&mode=crop&format=jpg&quality=80" alt="{{item.Name}}" />
                         </div>
                         <div class="category-item-tools col col-66">
-                            <h3 class="category-item__title">{{shortenName(item.Name)}}</h3>
+                            <h3 class="category-item__title" ng-class="{'optimal' : item.IsSpotOptimal}">{{shortenName(item.Name)}}</h3>
                             <div class="category-item__content">
                                 <div class="col item-category" data-ng-show="item.Distance != 'NaN' && item.Distance <= 3000">
                                     <span data-ng-hide="item.DrivingDistance">
@@ -35,8 +34,8 @@
 
                             <!--Weather Data-->
                             <div class="category-item__weather weather-box" data-ng-if="item.Weather" ng-class="{'optimal' : item.IsSpotOptimal}">
-                                <span class="icon ion-navigate" ng-style="{'transform': 'rotate('+ calculateWindDegressFromDirection(item.Weather.WindDirection) + 'deg)'}"></span>
-                                <span class="speed">{{item.Weather.WindSpeed}}</span>
+                                <span class="icon ion-navigate" ng-style="{'transform': 'rotate('+ calculateWindDegressFromDirection(item.Weather[0].WindDirection) + 'deg)'}"></span>
+                                <span class="speed">{{item.Weather[0].WindSpeed}}</span>
                                 <span class="">m/s</span>
                             </div>
                         </div>
